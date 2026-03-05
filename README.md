@@ -2,11 +2,17 @@
 
 Team jobs live here. Static status board for Jimmy's property management + listings workflow.
 
+## Live URLs
+
+- Main board (all projects): <https://jimmygent-ops.github.io/Jobboard/>
+- Field board (Melissa + Jon spotlight): <https://jimmygent-ops.github.io/Jobboard/field.html>
+
 ## Local development
 
-- `index.html` (root) is what GitHub Pages serves at <https://jimmygent-ops.github.io/Jobboard/>.
-- `jobboard/index.html` is the working copy we edit; after changes, copy or move it over the root file (or edit both if you prefer).
-- No build tooling—open either file directly in a browser, update the `sections` array + timestamp, commit.
+- `index.html` (root) is the main board GitHub Pages serves by default.
+- `jobboard/index.html` is the structured source for the main board; keep it in sync with `index.html`.
+- `field.html` renders the Melissa/Jon-only board. Update the `fieldTasks` array there when their workload changes.
+- No build tooling—open files directly in a browser, tweak timestamps/arrays, then commit.
 
 ## Deployment workflow
 
