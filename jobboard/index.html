@@ -16,7 +16,7 @@
       --muted: #4b5563;
       --accent: #2563eb;
       --pill-bg: #e0e7ff;
-      --pill-text: #1e40af;
+      --pill-text: #1e3a8a;
     }
     * { box-sizing: border-box; }
     body {
@@ -41,19 +41,49 @@
       color: var(--muted);
       font-size: 0.95rem;
     }
-    .board {
+    #board {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+    }
+    .person {
+      background: rgba(255, 255, 255, 0.85);
+      border-radius: 18px;
+      padding: 20px;
+      box-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+    }
+    .person.highlight {
+      border: 2px solid var(--accent);
+      box-shadow: 0 16px 45px rgba(37, 99, 235, 0.18);
+    }
+    .person-header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: baseline;
+      margin-bottom: 16px;
+    }
+    .person-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+    }
+    .role {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .card-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 16px;
     }
     .card {
       background: var(--card);
       border-radius: 16px;
-      padding: 20px;
-      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      padding: 18px;
+      box-shadow: inset 0 0 0 1px rgba(37, 99, 235, 0.04);
       display: flex;
       flex-direction: column;
-      gap: 12px;
+      gap: 10px;
     }
     .meta {
       display: flex;
@@ -67,7 +97,7 @@
       color: var(--pill-text);
       padding: 2px 10px;
       border-radius: 999px;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 600;
     }
     .notes {
@@ -85,128 +115,166 @@
 <body>
   <header>
     <h1>Ops Board · Thu, Mar 5</h1>
-    <span class="timestamp">Updated 7:18 AM PT</span>
+    <span class="timestamp">Updated 7:22 AM PT</span>
   </header>
 
-  <section class="board" id="board"></section>
+  <section id="board"></section>
 
   <footer>
     View-only for now. Send updates via email/SMS and Elliot will refresh the board.
   </footer>
 
   <script>
-    const tasks = [
+    const sections = [
       {
-        title: 'Mt. Whitney Tow Notice Posting',
-        status: 'Posted',
-        assignee: 'Melissa (field) + Elliot (tracking)',
-        notes: 'Melissa posted the notice. Waiting on her timestamp/photos so we can log the 72-hour clock and queue the tow vendor.'
+        owner: 'Melissa',
+        role: 'Field lead',
+        tasks: [
+          {
+            title: 'Mt. Whitney Tow Notice Posting',
+            status: 'Proof pending',
+            notes: 'Notice is up. Need your timestamp + photos so we can log the 72-hour tow clock.'
+          },
+          {
+            title: '852 Roundhouse – Running Toilet',
+            status: 'Scheduling',
+            notes: 'Work through Fidelity warranty line, lock the appointment, then confirm with the tenant.'
+          }
+        ]
       },
       {
-        title: 'Mt. Whitney Vehicle Removal Plan',
-        status: 'Prep in progress',
-        assignee: 'Elliot',
-        notes: 'Tow log template, preferred haulers, and PD call script drafted. Ready to lock once the posting timestamp arrives.'
+        owner: 'Jon',
+        role: 'Field tech',
+        tasks: [
+          {
+            title: 'Mt. Whitney Vehicle Photos + VIN',
+            status: 'Queued',
+            notes: 'As soon as Sandy gives us car + tenant info, grab the full photo set and VIN for the tow log.'
+          },
+          {
+            title: 'Groom Door – Pull & Deliver',
+            status: 'Stand by',
+            notes: 'Coordinate with Jimmy to remove the bad frame and drop it with the shop once measurements are locked.'
+          }
+        ]
       },
       {
-        title: 'Elizabeth Trip Details',
-        status: 'Light follow-up',
-        assignee: 'Elliot',
-        notes: 'Ping her once or twice a day (no pressure) until we have depart/return dates and which car we’re taking.'
+        owner: 'Sandy',
+        role: 'PM lead',
+        tasks: [
+          {
+            title: 'American Leak Detection – 852 Roundhouse',
+            status: 'Tue 3/10 · 8 AM',
+            notes: 'Be onsite and keep the downstairs neighbor informed once the tech arrives.'
+          },
+          {
+            title: 'Jet Plumbing – 7541 Cumberland',
+            status: 'Mon 3/9 · 12–2 PM',
+            notes: 'Confirm tenant access and text Elliot when the window is locked in.'
+          },
+          {
+            title: 'Matterport vs Zillow',
+            status: 'Decision needed',
+            notes: 'Review cost + downtime with Jimmy and decide whether to pause Matterport until Zillow integration returns.'
+          }
+        ]
       },
       {
-        title: '852 Roundhouse – Running Toilet (Fidelity)',
-        status: 'With Melissa',
-        assignee: 'Melissa',
-        notes: 'Melissa is scheduling through Fidelity’s warranty line. Need date/time + tenant confirmation once booked.'
+        owner: 'Jimmy',
+        role: 'Director',
+        tasks: [
+          {
+            title: 'Groom Door Vendor Call',
+            status: 'Today',
+            notes: 'Pick outside vendor vs. Jon/Jimmy rebuild so we can order the right frame + labor.'
+          },
+          {
+            title: 'Sawyer Citation Info',
+            status: 'Needed',
+            notes: 'Send issuing agency + citation number so Elliot can contest/delay the ticket.'
+          },
+          {
+            title: 'SMS Channel for Ops',
+            status: 'Choose platform',
+            notes: 'Decide on shared phone, Google Voice, or Twilio so Elliot can text Jon & Melissa directly.'
+          }
+        ]
       },
       {
-        title: 'Groom Door – Replacement Plan',
-        status: 'Needs vendor decision',
-        assignee: 'Jimmy + Elliot',
-        notes: 'Door frame is wrong size. Decide between hiring an outside vendor vs. Jimmy & Jon doing the rebuild; log plan once chosen.'
-      },
-      {
-        title: 'American Leak Detection',
-        status: 'Tuesday 8 AM',
-        assignee: 'Sandy',
-        notes: 'Carson job cancelled. Sandy needs to be at 852 Roundhouse Tuesday 3/10 at 8 AM to meet them and keep the downstairs neighbor informed.'
-      },
-      {
-        title: 'Stead Listing Call',
-        status: 'To do',
-        assignee: 'Elliot',
-        notes: 'Call for status update and capture any new contact info.'
-      },
-      {
-        title: 'Jet Plumbing – Cumberland',
-        status: 'Scheduled',
-        assignee: 'Sandy + Elliot',
-        notes: 'Jet booked for Mon 3/9, 12–2 PM at 7541 Cumberland. Need tenant access confirmation + tracker update.'
-      },
-      {
-        title: 'Damage Photos to Owner',
-        status: 'Ready to send',
-        assignee: 'Elliot',
-        notes: 'Package latest images and email to the owner for documentation.'
-      },
-      {
-        title: 'Sawyer Ticket Copy',
-        status: 'Waiting on Jimmy',
-        assignee: 'Elliot',
-        notes: 'Need issuing agency + citation number. Reminder set to ask Jimmy after 5 PM so we can contest/delay.'
-      },
-      {
-        title: 'Ops System Buildout',
-        status: 'In progress',
-        assignee: 'Elliot',
-        notes: 'Vendor DB, maintenance tracker, property folders, washer/dryer tracking “ops hour” work.'
-      },
-      {
-        title: '760 Marsh – Furnace + Masonry',
-        status: 'To do',
-        assignee: 'Elliot',
-        notes: 'Send furnace bid email and onboard the approved masonry vendor.'
-      },
-      {
-        title: 'Jon & Melissa Daily Plan',
-        status: 'Pre-field',
-        assignee: 'Jimmy + Elliot',
-        notes: 'Map their routes/tasks before they leave each morning.'
-      },
-      {
-        title: 'Matterport vs Zillow',
-        status: 'Discuss with Sandy',
-        assignee: 'Jimmy + Sandy',
-        notes: 'Decide whether to keep Matterport while Zillow integration is broken.'
-      },
-      {
-        title: 'SMS Capability for Elliot',
-        status: 'Needs setup',
-        assignee: 'Jimmy + Elliot',
-        notes: 'Choose channel (shared phone, Google Voice, or Twilio) so I can text Jon/Melissa directly.'
-      },
-      {
-        title: 'Job Board Deployment',
-        status: 'In progress',
-        assignee: 'Elliot',
-        notes: 'Push repo to GitHub, enable Pages, verify live build. Targeting live URL by tomorrow AM.'
+        owner: 'Elliot Projects',
+        role: 'Systems + comms',
+        highlight: true,
+        tasks: [
+          {
+            title: 'Mt. Whitney Vehicle Removal Plan',
+            status: 'Ready',
+            notes: 'Tow log, vendor list, and PD call script drafted. Waiting on Melissa timestamp to start the 72-hour clock.'
+          },
+          {
+            title: 'Elizabeth Trip Details',
+            status: 'Light follow-up',
+            notes: 'Daily nudge for depart/return dates and which car we’re taking.'
+          },
+          {
+            title: 'Stead Listing Call',
+            status: 'To do',
+            notes: 'Call for status update and capture any new contact info.'
+          },
+          {
+            title: 'Damage Photos to Owner',
+            status: 'Ready to send',
+            notes: 'Package the latest set and email once you approve the narrative.'
+          },
+          {
+            title: '760 Marsh – Furnace + Masonry',
+            status: 'In progress',
+            notes: 'Send furnace bid email and onboard the approved masonry vendor.'
+          },
+          {
+            title: 'Ops System Buildout',
+            status: 'Weekly ops hour',
+            notes: 'Vendor DB, maintenance tracker, property folders, washer/dryer tracking.'
+          },
+          {
+            title: 'Job Board & Comms',
+            status: 'Live',
+            notes: 'Maintain the GitHub Pages site and add SMS workflows once the platform is picked.'
+          }
+        ]
       }
     ];
 
     const board = document.getElementById('board');
-    tasks.forEach(task => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="meta">
-          <span class="pill">${task.status}</span>
-          <span>Owner: ${task.assignee}</span>
-        </div>
-        <h2>${task.title}</h2>
-        <p class="notes">${task.notes}</p>
+    sections.forEach(section => {
+      const wrapper = document.createElement('article');
+      wrapper.className = section.highlight ? 'person highlight' : 'person';
+
+      const header = document.createElement('div');
+      header.className = 'person-header';
+      header.innerHTML = `
+        <h2>${section.owner}</h2>
+        <span class="role">${section.role}</span>
       `;
-      board.appendChild(card);
+
+      const grid = document.createElement('div');
+      grid.className = 'card-grid';
+
+      section.tasks.forEach(task => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="meta">
+            <span class="pill">${task.status}</span>
+          </div>
+          <h3>${task.title}</h3>
+          <p class="notes">${task.notes}</p>
+        `;
+        grid.appendChild(card);
+      });
+
+      wrapper.appendChild(header);
+      wrapper.appendChild(grid);
+      board.appendChild(wrapper);
     });
   </script>
 </body>
