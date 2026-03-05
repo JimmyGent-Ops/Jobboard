@@ -6,6 +6,7 @@
 
 # Allow primary docs
 !README.md
+!index.html
 
 # Allow site assets
 !jobboard/
