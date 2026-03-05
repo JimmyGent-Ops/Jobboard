@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Jimmy Ops Board</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #f4f4f6;
+      --card: #fff;
+      --text: #1f2933;
+      --muted: #4b5563;
+      --accent: #2563eb;
+      --pill-bg: #e0e7ff;
+      --pill-text: #1e40af;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      padding: 24px;
+    }
+    header {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      align-items: baseline;
+      margin-bottom: 24px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 3vw, 2.2rem);
+    }
+    .timestamp {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .board {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 16px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .pill {
+      background: var(--pill-bg);
+      color: var(--pill-text);
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+    .notes {
+      line-height: 1.4;
+      font-size: 0.95rem;
+    }
+    footer {
+      margin-top: 32px;
+      font-size: 0.85rem;
+      color: var(--muted);
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Ops Board · Thu, Mar 5</h1>
+    <span class="timestamp">Updated 6:55 AM PT</span>
+  </header>
+
+  <section class="board" id="board"></section>
+
+  <footer>
+    View-only for now. Send updates via email/SMS and Elliot will refresh the board.
+  </footer>
+
+  <script>
+    const tasks = [
+      {
+        title: 'Mt. Whitney Tow Notice Posting',
+        status: 'Posted',
+        assignee: 'Melissa (field) + Elliot (tracking)',
+        notes: 'Melissa posted the notice. Waiting on her timestamp/photos so we can log the 72-hour clock and queue the tow vendor.'
+      },
+      {
+        title: 'Mt. Whitney Vehicle Removal Plan',
+        status: 'Prep in progress',
+        assignee: 'Elliot',
+        notes: 'Tow log template, preferred haulers, and PD call script drafted. Ready to lock once the posting timestamp arrives.'
+      },
+      {
+        title: 'Elizabeth Trip Details',
+        status: 'Light follow-up',
+        assignee: 'Elliot',
+        notes: 'Ping her once or twice a day (no pressure) until we have depart/return dates and which car we’re taking.'
+      },
+      {
+        title: '852 Roundhouse – Running Toilet (Fidelity)',
+        status: 'With Melissa',
+        assignee: 'Melissa',
+        notes: 'Melissa is scheduling through Fidelity’s warranty line. Need date/time + tenant confirmation once booked.'
+      },
+      {
+        title: 'Groom Door – Replacement Plan',
+        status: 'Needs vendor decision',
+        assignee: 'Jimmy + Elliot',
+        notes: 'Door frame is wrong size. Decide between hiring an outside vendor vs. Jimmy & Jon doing the rebuild; log plan once chosen.'
+      },
+      {
+        title: 'American Leak Detection',
+        status: 'Tuesday 8 AM',
+        assignee: 'Sandy',
+        notes: 'Carson job cancelled. Sandy needs to be at 852 Roundhouse Tuesday 3/10 at 8 AM to meet them and keep the downstairs neighbor informed.'
+      },
+      {
+        title: 'Stead Listing Call',
+        status: 'To do',
+        assignee: 'Elliot',
+        notes: 'Call for status update and capture any new contact info.'
+      },
+      {
+        title: 'Jet Plumbing – Cumberland',
+        status: 'Scheduled',
+        assignee: 'Sandy + Elliot',
+        notes: 'Jet booked for Mon 3/9, 12–2 PM at 7541 Cumberland. Need tenant access confirmation + tracker update.'
+      },
+      {
+        title: 'Damage Photos to Owner',
+        status: 'Ready to send',
+        assignee: 'Elliot',
+        notes: 'Package latest images and email to the owner for documentation.'
+      },
+      {
+        title: 'Sawyer Ticket Copy',
+        status: 'Waiting on Jimmy',
+        assignee: 'Elliot',
+        notes: 'Need issuing agency + citation number. Reminder set to ask Jimmy after 5 PM so we can contest/delay.'
+      },
+      {
+        title: 'Ops System Buildout',
+        status: 'In progress',
+        assignee: 'Elliot',
+        notes: 'Vendor DB, maintenance tracker, property folders, washer/dryer tracking “ops hour” work.'
+      },
+      {
+        title: '760 Marsh – Furnace + Masonry',
+        status: 'To do',
+        assignee: 'Elliot',
+        notes: 'Send furnace bid email and onboard the approved masonry vendor.'
+      },
+      {
+        title: 'Jon & Melissa Daily Plan',
+        status: 'Pre-field',
+        assignee: 'Jimmy + Elliot',
+        notes: 'Map their routes/tasks before they leave each morning.'
+      },
+      {
+        title: 'Matterport vs Zillow',
+        status: 'Discuss with Sandy',
+        assignee: 'Jimmy + Sandy',
+        notes: 'Decide whether to keep Matterport while Zillow integration is broken.'
+      },
+      {
+        title: 'SMS Capability for Elliot',
+        status: 'Needs setup',
+        assignee: 'Jimmy + Elliot',
+        notes: 'Choose channel (shared phone, Google Voice, or Twilio) so I can text Jon/Melissa directly.'
+      },
+      {
+        title: 'Job Board Deployment',
+        status: 'In progress',
+        assignee: 'Elliot',
+        notes: 'Push repo to GitHub, enable Pages, verify live build. Targeting live URL by tomorrow AM.'
+      }
+    ];
+
+    const board = document.getElementById('board');
+    tasks.forEach(task => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="meta">
+          <span class="pill">${task.status}</span>
+          <span>Owner: ${task.assignee}</span>
+        </div>
+        <h2>${task.title}</h2>
+        <p class="notes">${task.notes}</p>
+      `;
+      board.appendChild(card);
+    });
+  </script>
+</body>
+</html>
