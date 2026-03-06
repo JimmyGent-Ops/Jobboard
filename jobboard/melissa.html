@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Field Ops Board — Melissa & Jon</title>
+  <title>Melissa – Field Ops Board</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
@@ -44,7 +44,7 @@
     }
     .board {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 18px;
     }
     .card {
@@ -52,11 +52,11 @@
       border-radius: 18px;
       padding: 20px;
       box-shadow: 0 15px 50px rgba(2, 6, 23, 0.8);
-      border: 1px solid rgba(56, 189, 248, 0.2);
+      border: 1px solid rgba(56, 189, 248, 0.25);
     }
     .card h2 {
       margin: 0 0 8px;
-      font-size: 1.2rem;
+      font-size: 1.1rem;
     }
     .meta {
       display: flex;
@@ -80,7 +80,7 @@
       color: #f8fafc;
     }
     footer {
-      margin-top: 32px;
+      margin-top: 28px;
       text-align: center;
       color: var(--muted);
       font-size: 0.85rem;
@@ -89,51 +89,42 @@
 </head>
 <body>
   <header>
-    <h1>Field Ops · Fri, Mar 6</h1>
-    <span class="timestamp">Updated 9:48 AM PT</span>
+    <h1>Melissa – Field Ops · Fri, Mar 6</h1>
+    <span class="timestamp">Updated 9:50 AM PT</span>
   </header>
 
   <section class="board" id="board"></section>
 
   <footer>
-    This board mirrors the Melissa + Jon cards from the main site.
+    Pulls from today’s task list. Ping Elliot when something changes.
   </footer>
 
   <script>
-    const fieldTasks = [
+    const tasks = [
       {
-        owner: 'Melissa',
-        title: 'Mariner Cove Rent-Ready Check',
+        title: 'Mariner Cove Rent-Ready Walk',
         status: 'Today',
-        notes: 'Bring water + light cleaning supplies; confirm smoke detectors, cleanliness, empty cabinets. Document issues and report back.'
+        notes: 'Bring water + light cleaning supplies. Check smoke detectors, cleanliness, cabinets, and document any issues for Jimmy.'
       },
       {
-        owner: 'Melissa',
         title: 'Largomarcino Move-In Photos',
-        status: 'On deck',
-        notes: 'Complete the photo package right after Jon programs the garage remote and keys.'
+        status: 'Ready once Jon finishes',
+        notes: 'Capture full move-in photo package right after the garage remote + keys are done. Upload to AI_Operations.'
       },
       {
-        owner: 'Melissa / Jon',
         title: '4606 Neil Exterior Photos',
-        status: 'Shared',
-        notes: 'Capture exterior + storage to flag any HOA violations, then send to Sandy & Jimmy.'
-      },
-      {
-        owner: 'Jon',
-        title: 'Largomarcino Remote + Keys',
-        status: 'In progress',
-        notes: 'Program the garage remote and cut/deliver the new key set for the upcoming move-in.'
+        status: 'Shared with Jon',
+        notes: 'Photograph exterior/storage to confirm any HOA violations, then send findings to Sandy & Jimmy.'
       }
     ];
 
     const board = document.getElementById('board');
-    fieldTasks.forEach(task => {
+    tasks.forEach(task => {
       const card = document.createElement('article');
       card.className = 'card';
       card.innerHTML = `
         <div class="meta">
-          <span>${task.owner}</span>
+          <span>Melissa</span>
           <span class="pill">${task.status}</span>
         </div>
         <h2>${task.title}</h2>

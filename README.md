@@ -5,7 +5,9 @@ Team jobs live here. Static status board for Jimmy's property management + listi
 ## Live URLs
 
 - Main board (all projects): <https://jimmygent-ops.github.io/Jobboard/>
-- Field board (Melissa + Jon spotlight): <https://jimmygent-ops.github.io/Jobboard/field.html>
+- Melissa-only board: <https://jimmygent-ops.github.io/Jobboard/melissa.html>
+- Jon-only board: <https://jimmygent-ops.github.io/Jobboard/jon.html>
+- Legacy combined field board: <https://jimmygent-ops.github.io/Jobboard/field.html>
 
 ## Local development
 
