@@ -10,7 +10,7 @@
   <style>
     :root {
       color-scheme: light dark;
-      --bg: #0f172a;
+      --bg: #050714;
       --panel: rgba(15, 23, 42, 0.92);
       --card: rgba(15, 23, 42, 0.9);
       --border: rgba(94, 234, 212, 0.3);
@@ -26,30 +26,76 @@
       font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
       margin: 0;
       min-height: 100vh;
-      background: radial-gradient(circle at top, #1e1b4b 0%, #020617 45%);
+      background: radial-gradient(circle at top, #1e1b4b 0%, #020617 55%);
       color: var(--text);
-      padding: clamp(16px, 3vw, 40px);
+      display: flex;
     }
-    header {
+    .layout {
+      display: flex;
+      width: 100%;
+    }
+    .sidebar {
+      width: clamp(220px, 22vw, 260px);
+      background: rgba(7, 10, 28, 0.95);
+      border-right: 1px solid rgba(94, 234, 212, 0.15);
+      padding: 32px 20px;
       display: flex;
       flex-direction: column;
-      gap: 8px;
-      margin-bottom: 28px;
+      gap: 14px;
+      box-shadow: inset -1px 0 0 rgba(94, 234, 212, 0.12);
     }
-    h1 {
-      margin: 0;
-      font-size: clamp(1.6rem, 4vw, 2.6rem);
+    .logo {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 10px;
     }
     .timestamp {
       color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+    }
+    .tab-btn {
+      border: 1px solid rgba(94, 234, 212, 0.15);
+      background: transparent;
+      color: var(--text);
+      padding: 10px 14px;
+      border-radius: 12px;
       font-size: 0.95rem;
+      text-align: left;
+      cursor: pointer;
+      transition: background 0.2s ease, border 0.2s ease;
+    }
+    .tab-btn.active {
+      background: rgba(94, 234, 212, 0.18);
+      border-color: rgba(94, 234, 212, 0.45);
+      color: #0d9488;
+      font-weight: 600;
+    }
+    .content {
+      flex: 1;
+      padding: clamp(20px, 3vw, 40px);
+    }
+    .tab-panel {
+      display: none;
+      animation: fade 0.25s ease;
+    }
+    .tab-panel.active {
+      display: block;
+    }
+    @keyframes fade {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    h1 {
+      margin: 0 0 8px;
+      font-size: clamp(1.5rem, 3vw, 2.4rem);
     }
     .grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
       gap: 16px;
     }
-    section {
+    section.panel {
       background: var(--panel);
       border: 1px solid var(--border);
       border-radius: 22px;
@@ -57,14 +103,19 @@
       box-shadow: 0 25px 70px rgba(2, 6, 23, 0.55);
       display: flex;
       flex-direction: column;
-      gap: 16px;
+      gap: 18px;
     }
-    section h2 {
+    section.panel h2 {
       margin: 0;
       font-size: 1.15rem;
       display: flex;
       align-items: center;
       gap: 10px;
+    }
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 14px;
     }
     .card {
       background: var(--card);
@@ -96,209 +147,271 @@
       font-size: 0.95rem;
       line-height: 1.4;
     }
-    .danger {
-      color: var(--danger);
+    .person-panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 25px 70px rgba(2, 6, 23, 0.45);
     }
-    @media (max-width: 640px) {
-      section {
-        padding: 16px;
+    .person-panel h2 {
+      margin: 0 0 12px;
+    }
+    @media (max-width: 900px) {
+      body {
+        flex-direction: column;
+      }
+      .layout {
+        flex-direction: column;
+      }
+      .sidebar {
+        width: 100%;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .logo, .timestamp {
+        width: 100%;
+      }
+      .tab-btn {
+        flex: 1 1 calc(50% - 10px);
       }
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>Command Center</h1>
-    <div id="timestamp" class="timestamp"></div>
-  </header>
+  <div class="layout">
+    <aside class="sidebar">
+      <div class="logo">Command Center</div>
+      <div id="sidebar-timestamp" class="timestamp"></div>
+      <button class="tab-btn active" data-tab="main">Overview</button>
+      <button class="tab-btn" data-tab="jimmy">Jimmy + Elliot</button>
+      <button class="tab-btn" data-tab="sandy">Sandy</button>
+      <button class="tab-btn" data-tab="jon">Jon</button>
+      <button class="tab-btn" data-tab="melissa">Melissa</button>
+    </aside>
 
-  <div class="grid">
-    <section>
-      <h2>Leads & Listings</h2>
-      <div id="lead-cards"></div>
-    </section>
+    <main class="content">
+      <div id="tab-main" class="tab-panel active">
+        <section class="panel">
+          <h2>Command Overview</h2>
+          <div class="grid">
+            <div class="card" id="lead-summary"></div>
+            <div class="card" id="notice-summary"></div>
+            <div class="card" id="vendor-summary"></div>
+          </div>
+        </section>
 
-    <section>
-      <h2>Vacate / Notice Queue</h2>
-      <div id="notice-cards"></div>
-    </section>
+        <div class="grid" style="margin-top: 18px;">
+          <section class="panel">
+            <h2>Leads & Listings</h2>
+            <div id="lead-cards" class="card-grid"></div>
+          </section>
+          <section class="panel">
+            <h2>Vacate / Notice Queue</h2>
+            <div id="notice-cards" class="card-grid"></div>
+          </section>
+        </div>
 
-    <section>
-      <h2>Vendor & Field Queue</h2>
-      <div id="vendor-cards"></div>
-    </section>
+        <div class="grid" style="margin-top: 18px;">
+          <section class="panel">
+            <h2>Vendor & Field Queue</h2>
+            <div id="vendor-cards" class="card-grid"></div>
+          </section>
+          <section class="panel">
+            <h2>Field Ops Today</h2>
+            <div id="field-cards" class="card-grid"></div>
+          </section>
+        </div>
 
-    <section>
-      <h2>Field Ops Today</h2>
-      <div id="field-cards"></div>
-    </section>
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Reminders & Blocks</h2>
+          <div id="reminder-cards" class="card-grid"></div>
+        </section>
+      </div>
 
-    <section>
-      <h2>Reminders & Blocks</h2>
-      <div id="reminder-cards"></div>
-    </section>
+      <div id="tab-jimmy" class="tab-panel">
+        <div class="person-panel">
+          <h2>Jimmy + Elliot Projects</h2>
+          <div id="jimmy-cards" class="card-grid"></div>
+        </div>
+      </div>
+
+      <div id="tab-sandy" class="tab-panel">
+        <div class="person-panel">
+          <h2>Sandy Queue</h2>
+          <div id="sandy-cards" class="card-grid"></div>
+        </div>
+      </div>
+
+      <div id="tab-jon" class="tab-panel">
+        <div class="person-panel">
+          <h2>Jon Queue</h2>
+          <div id="jon-cards" class="card-grid"></div>
+        </div>
+      </div>
+
+      <div id="tab-melissa" class="tab-panel">
+        <div class="person-panel">
+          <h2>Melissa Queue</h2>
+          <div id="melissa-cards" class="card-grid"></div>
+        </div>
+      </div>
+    </main>
   </div>
 
   <script>
     const state = {
       leads: [
-        {
-          name: 'Connie Sutton',
-          property: '8330 Halladale',
-          status: '$399k / $395k / $385k net sheets',
-          next: 'Deliver the three versions and capture her pricing feedback.'
-        },
-        {
-          name: 'Copperwood Listing',
-          property: 'Copperwood, Reno',
-          status: 'MLS launch pending',
-          next: 'Load listing details, confirm measurements, schedule photos.'
-        },
-        {
-          name: 'Mariner Cove Tenant',
-          property: 'Mariner Cove',
-          status: 'Application review',
-          next: 'Pick tenant with Sandy as soon as rent-ready walk clears.'
-        }
+        { name: 'Connie Sutton', property: '8330 Halladale', status: '$399k / $395k / $385k net sheets', next: 'Deliver the three versions and capture pricing feedback.' },
+        { name: 'Copperwood Listing', property: 'Copperwood, Reno', status: 'MLS launch pending', next: 'Load listing data, confirm measurements, schedule photos.' },
+        { name: 'Mariner Cove Tenant', property: 'Mariner Cove', status: 'Application review', next: 'Pick tenant with Sandy once rent-ready walk clears.' }
       ],
       notices: [
-        {
-          property: '214 Red Oak',
-          status: 'Draft ready',
-          deadline: 'Move-out by Apr 30',
-          next: 'Need tenant names + delivery method to send notice.'
-        },
-        {
-          property: 'Additional 30-day notices',
-          status: 'Needs list',
-          deadline: 'Queue this week',
-          next: 'Waiting on Sandy for any other addresses still needing paperwork.'
-        }
+        { property: '214 Red Oak', status: 'Draft ready', deadline: 'Move-out by Apr 30', next: 'Need tenant names + delivery method to send notice.' },
+        { property: 'Additional 30-day notices', status: 'Needs list', deadline: 'Queue this week', next: 'Waiting on Sandy for any other addresses needing paperwork.' }
       ],
       vendors: [
-        {
-          vendor: 'American Leak Detection',
-          property: '852 Roundhouse',
-          status: '3/10 · 8:00 AM',
-          next: 'Confirm Sandy was onsite + capture findings/repair status.'
-        },
-        {
-          vendor: 'Jet Plumbing',
-          property: '7541 Cumberland',
-          status: '3/9 · 12–2 PM window',
-          next: 'Need tenant access confirmation + tracker update.'
-        },
-        {
-          vendor: 'Groom Door Shop',
-          property: 'Door rebuild',
-          status: 'Awaiting check + pickup date',
-          next: 'Drop payment, schedule pickup, notify Jon for reinstall.'
-        }
+        { vendor: 'American Leak Detection', property: '852 Roundhouse', status: '3/10 · 8:00 AM', next: 'Confirm Sandy was onsite + capture findings/repair callout.' },
+        { vendor: 'Jet Plumbing', property: '7541 Cumberland', status: '3/9 · 12–2 PM', next: 'Need tenant access confirmation + tracker update.' },
+        { vendor: 'Groom Door Shop', property: 'Door rebuild', status: 'Awaiting check + pickup date', next: 'Drop payment, schedule pickup, notify Jon for reinstall.' }
       ],
       field: [
-        {
-          owner: 'Melissa',
-          task: 'Mariner Cove rent-ready walk',
-          status: 'Today',
-          note: 'Bring cleaning supplies, verify detectors, cabinets, cleanliness.'
-        },
-        {
-          owner: 'Jon',
-          task: 'Largomarcino remote + keys',
-          status: 'In progress',
-          note: 'Program garage remote, cut/deliver keys so Melissa can shoot photos.'
-        },
-        {
-          owner: 'Jon & Melissa',
-          task: '4606 Neil exterior set',
-          status: 'Shared',
-          note: 'Capture exterior/storage photos to flag possible HOA issues.'
-        }
+        { owner: 'Melissa', task: 'Mariner Cove rent-ready walk', status: 'Today', note: 'Bring cleaning supplies, verify detectors, cabinets, cleanliness.' },
+        { owner: 'Jon', task: 'Largomarcino remote + keys', status: 'In progress', note: 'Program garage remote, cut/deliver keys so Melissa can shoot photos.' },
+        { owner: 'Jon & Melissa', task: '4606 Neil exterior set', status: 'Shared', note: 'Capture exterior/storage photos to flag possible HOA issues.' }
       ],
       reminders: [
-        {
-          item: 'Sawyer citation info',
-          detail: 'Need issuing agency + citation number to contest/delay.'
-        },
-        {
-          item: 'Text channel for ops',
-          detail: 'Wire up Twilio/shared line so Elliot can text Jimmy, Jon, Melissa.'
-        },
-        {
-          item: 'Ops build hour',
-          detail: 'Vendor DB, maintenance tracker, property folders, washer/dryer log.'
-        }
+        { item: 'Sawyer citation info', detail: 'Need issuing agency + citation number to contest/delay.' },
+        { item: 'Text channel for ops', detail: 'Wire up Twilio/shared line so Elliot can text Jimmy, Jon, Melissa.' },
+        { item: 'Ops build hour', detail: 'Vendor DB, maintenance tracker, property folders, washer/dryer log.' }
+      ],
+      jimmy: [
+        { title: 'Groom Door Vendor Call', status: 'Decision + check', notes: 'Pick vendor vs. in-house, drop payment, send pickup date.' },
+        { title: 'Halladale Net Sheets', status: '$399k / 395k / 385k', notes: 'Deliver all three versions to Connie Sutton and log feedback.' },
+        { title: 'Copperwood MLS Launch', status: 'Prep', notes: 'Load listing copy/photos and confirm measurements before publishing.' },
+        { title: 'Sawyer Citation Info', status: 'Needed', notes: 'Send agency + citation number so notice can be contested.' },
+        { title: 'SMS Channel for Ops', status: 'Choose platform', notes: 'Confirm Twilio/shared line so Elliot can text field teams + you.' }
+      ],
+      sandy: [
+        { title: 'American Leak Detection – 852 Roundhouse', status: '3/10 · 8 AM', notes: 'Be onsite, inform downstairs neighbor, report findings.' },
+        { title: 'Jet Plumbing – 7541 Cumberland', status: '3/9 · 12–2 PM', notes: 'Lock tenant access window and text confirmation.' },
+        { title: 'Matterport vs. Zillow', status: 'Decision needed', notes: 'Review cost/downtime with Jimmy and decide whether to pause Matterport.' },
+        { title: '30-day notice list', status: 'Outstanding', notes: 'Send any other addresses needing notices so paperwork can be queued.' }
+      ],
+      jon: [
+        { title: 'Mt. Whitney Vehicle Photos + VIN', status: 'Queued', notes: 'Grab full photo set + VIN once tenant/vehicle info arrives.' },
+        { title: 'Groom Door – Pull & Deliver', status: 'Stand by', notes: 'Coordinate with Jimmy before dropping at Groom door shop.' },
+        { title: 'Largomarcino remote + keys', status: 'In progress', notes: 'Program remote, cut/deliver keys before Melissa’s photo run.' },
+        { title: '4606 Neil Exterior Photos', status: 'Shared', notes: 'Partner with Melissa to document exterior/storage & flag HOA issues.' }
+      ],
+      melissa: [
+        { title: 'Mt. Whitney Tow Notice Posting', status: 'Proof pending', notes: 'Provide timestamp + photos so 72-hour tow clock is logged.' },
+        { title: '852 Roundhouse – Running Toilet', status: 'Scheduling', notes: 'Coordinate Fidelity warranty call, lock appointment, confirm tenant.' },
+        { title: 'Mariner Cove Rent-Ready Walk', status: 'Today', notes: 'Bring supplies, verify detectors, cabinets, cleanliness, document issues.' },
+        { title: '4606 Neil Exterior Photos', status: 'Shared', notes: 'Capture exterior/storage views and send findings to Sandy & Jimmy.' }
       ]
     };
 
-    const now = new Date().toLocaleString('en-US', {
+    const timestamp = new Date().toLocaleString('en-US', {
       weekday: 'short', month: 'short', day: 'numeric',
       hour: 'numeric', minute: '2-digit', hour12: true
     });
-    document.getElementById('timestamp').textContent = `Updated ${now}`;
+    document.getElementById('sidebar-timestamp').textContent = `Updated ${timestamp}`;
 
-    const leadCards = document.getElementById('lead-cards');
-    state.leads.forEach(lead => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="pill">${lead.status}</div>
-        <h3>${lead.name}</h3>
-        <div class="meta">${lead.property}</div>
-        <p class="notes">${lead.next}</p>
-      `;
-      leadCards.appendChild(card);
-    });
+    const leadSummary = document.getElementById('lead-summary');
+    leadSummary.innerHTML = `
+      <h3>Focus Leads</h3>
+      <p class="notes">${state.leads.length} active: ${state.leads.map(l => l.name).join(', ')}.</p>
+    `;
+    const noticeSummary = document.getElementById('notice-summary');
+    noticeSummary.innerHTML = `
+      <h3>Notice Queue</h3>
+      <p class="notes">${state.notices.length} files. Next deadline: ${state.notices[0].deadline}.</p>
+    `;
+    const vendorSummary = document.getElementById('vendor-summary');
+    vendorSummary.innerHTML = `
+      <h3>Vendors</h3>
+      <p class="notes">${state.vendors.length} active vendors. Groom door + Jet Plumbing need updates.</p>
+    `;
 
-    const noticeCards = document.getElementById('notice-cards');
-    state.notices.forEach(notice => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="pill">${notice.status}</div>
-        <h3>${notice.property}</h3>
-        <div class="meta">${notice.deadline}</div>
-        <p class="notes">${notice.next}</p>
-      `;
-      noticeCards.appendChild(card);
-    });
+    function renderCards(containerId, items, mapFn) {
+      const container = document.getElementById(containerId);
+      container.innerHTML = '';
+      items.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = mapFn(item);
+        container.appendChild(card);
+      });
+    }
 
-    const vendorCards = document.getElementById('vendor-cards');
-    state.vendors.forEach(vendor => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="pill">${vendor.status}</div>
-        <h3>${vendor.vendor}</h3>
-        <div class="meta">${vendor.property}</div>
-        <p class="notes">${vendor.next}</p>
-      `;
-      vendorCards.appendChild(card);
-    });
+    renderCards('lead-cards', state.leads, lead => `
+      <div class="pill">${lead.status}</div>
+      <h3>${lead.name}</h3>
+      <div class="meta">${lead.property}</div>
+      <p class="notes">${lead.next}</p>
+    `);
 
-    const fieldCards = document.getElementById('field-cards');
-    state.field.forEach(item => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <div class="pill">${item.status}</div>
-        <h3>${item.task}</h3>
-        <div class="meta">${item.owner}</div>
-        <p class="notes">${item.note}</p>
-      `;
-      fieldCards.appendChild(card);
-    });
+    renderCards('notice-cards', state.notices, notice => `
+      <div class="pill">${notice.status}</div>
+      <h3>${notice.property}</h3>
+      <div class="meta">${notice.deadline}</div>
+      <p class="notes">${notice.next}</p>
+    `);
 
-    const reminderCards = document.getElementById('reminder-cards');
-    state.reminders.forEach(reminder => {
-      const card = document.createElement('article');
-      card.className = 'card';
-      card.innerHTML = `
-        <h3>${reminder.item}</h3>
-        <p class="notes">${reminder.detail}</p>
-      `;
-      reminderCards.appendChild(card);
-    });
+    renderCards('vendor-cards', state.vendors, vendor => `
+      <div class="pill">${vendor.status}</div>
+      <h3>${vendor.vendor}</h3>
+      <div class="meta">${vendor.property}</div>
+      <p class="notes">${vendor.next}</p>
+    `);
+
+    renderCards('field-cards', state.field, item => `
+      <div class="pill">${item.status}</div>
+      <h3>${item.task}</h3>
+      <div class="meta">${item.owner}</div>
+      <p class="notes">${item.note}</p>
+    `);
+
+    renderCards('reminder-cards', state.reminders, reminder => `
+      <h3>${reminder.item}</h3>
+      <p class="notes">${reminder.detail}</p>
+    `);
+
+    renderCards('jimmy-cards', state.jimmy, task => `
+      <div class="pill">${task.status}</div>
+      <h3>${task.title}</h3>
+      <p class="notes">${task.notes}</p>
+    `);
+
+    renderCards('sandy-cards', state.sandy, task => `
+      <div class="pill">${task.status}</div>
+      <h3>${task.title}</h3>
+      <p class="notes">${task.notes}</p>
+    `);
+
+    renderCards('jon-cards', state.jon, task => `
+      <div class="pill">${task.status}</div>
+      <h3>${task.title}</h3>
+      <p class="notes">${task.notes}</p>
+    `);
+
+    renderCards('melissa-cards', state.melissa, task => `
+      <div class="pill">${task.status}</div>
+      <h3>${task.title}</h3>
+      <p class="notes">${task.notes}</p>
+    `);
+
+    const buttons = document.querySelectorAll('.tab-btn');
+    const panels = document.querySelectorAll('.tab-panel');
+
+    function activateTab(tab) {
+      buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.tab === tab));
+      panels.forEach(panel => panel.classList.toggle('active', panel.id === `tab-${tab}`));
+    }
+
+    buttons.forEach(btn => btn.addEventListener('click', () => activateTab(btn.dataset.tab)));
   </script>
 </body>
 </html>
