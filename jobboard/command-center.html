@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Command Center · Jimmy Ops</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #0f172a;
+      --panel: rgba(15, 23, 42, 0.92);
+      --card: rgba(15, 23, 42, 0.9);
+      --border: rgba(94, 234, 212, 0.3);
+      --text: #e2e8f0;
+      --muted: #94a3b8;
+      --accent: #5eead4;
+      --pill-bg: rgba(94, 234, 212, 0.25);
+      --pill-text: #0d9488;
+      --danger: #f87171;
+    }
+    * { box-sizing: border-box; }
+    body {
+      font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      margin: 0;
+      min-height: 100vh;
+      background: radial-gradient(circle at top, #1e1b4b 0%, #020617 45%);
+      color: var(--text);
+      padding: clamp(16px, 3vw, 40px);
+    }
+    header {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      margin-bottom: 28px;
+    }
+    h1 {
+      margin: 0;
+      font-size: clamp(1.6rem, 4vw, 2.6rem);
+    }
+    .timestamp {
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+    }
+    section {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 25px 70px rgba(2, 6, 23, 0.55);
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+    section h2 {
+      margin: 0;
+      font-size: 1.15rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(94, 234, 212, 0.12);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .card h3 {
+      margin: 0;
+      font-size: 1rem;
+    }
+    .pill {
+      align-self: flex-start;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: var(--pill-bg);
+      color: var(--pill-text);
+    }
+    .meta {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+    .notes {
+      font-size: 0.95rem;
+      line-height: 1.4;
+    }
+    .danger {
+      color: var(--danger);
+    }
+    @media (max-width: 640px) {
+      section {
+        padding: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>Command Center</h1>
+    <div id="timestamp" class="timestamp"></div>
+  </header>
+
+  <div class="grid">
+    <section>
+      <h2>Leads & Listings</h2>
+      <div id="lead-cards"></div>
+    </section>
+
+    <section>
+      <h2>Vacate / Notice Queue</h2>
+      <div id="notice-cards"></div>
+    </section>
+
+    <section>
+      <h2>Vendor & Field Queue</h2>
+      <div id="vendor-cards"></div>
+    </section>
+
+    <section>
+      <h2>Field Ops Today</h2>
+      <div id="field-cards"></div>
+    </section>
+
+    <section>
+      <h2>Reminders & Blocks</h2>
+      <div id="reminder-cards"></div>
+    </section>
+  </div>
+
+  <script>
+    const state = {
+      leads: [
+        {
+          name: 'Connie Sutton',
+          property: '8330 Halladale',
+          status: '$399k / $395k / $385k net sheets',
+          next: 'Deliver the three versions and capture her pricing feedback.'
+        },
+        {
+          name: 'Copperwood Listing',
+          property: 'Copperwood, Reno',
+          status: 'MLS launch pending',
+          next: 'Load listing details, confirm measurements, schedule photos.'
+        },
+        {
+          name: 'Mariner Cove Tenant',
+          property: 'Mariner Cove',
+          status: 'Application review',
+          next: 'Pick tenant with Sandy as soon as rent-ready walk clears.'
+        }
+      ],
+      notices: [
+        {
+          property: '214 Red Oak',
+          status: 'Draft ready',
+          deadline: 'Move-out by Apr 30',
+          next: 'Need tenant names + delivery method to send notice.'
+        },
+        {
+          property: 'Additional 30-day notices',
+          status: 'Needs list',
+          deadline: 'Queue this week',
+          next: 'Waiting on Sandy for any other addresses still needing paperwork.'
+        }
+      ],
+      vendors: [
+        {
+          vendor: 'American Leak Detection',
+          property: '852 Roundhouse',
+          status: '3/10 · 8:00 AM',
+          next: 'Confirm Sandy was onsite + capture findings/repair status.'
+        },
+        {
+          vendor: 'Jet Plumbing',
+          property: '7541 Cumberland',
+          status: '3/9 · 12–2 PM window',
+          next: 'Need tenant access confirmation + tracker update.'
+        },
+        {
+          vendor: 'Groom Door Shop',
+          property: 'Door rebuild',
+          status: 'Awaiting check + pickup date',
+          next: 'Drop payment, schedule pickup, notify Jon for reinstall.'
+        }
+      ],
+      field: [
+        {
+          owner: 'Melissa',
+          task: 'Mariner Cove rent-ready walk',
+          status: 'Today',
+          note: 'Bring cleaning supplies, verify detectors, cabinets, cleanliness.'
+        },
+        {
+          owner: 'Jon',
+          task: 'Largomarcino remote + keys',
+          status: 'In progress',
+          note: 'Program garage remote, cut/deliver keys so Melissa can shoot photos.'
+        },
+        {
+          owner: 'Jon & Melissa',
+          task: '4606 Neil exterior set',
+          status: 'Shared',
+          note: 'Capture exterior/storage photos to flag possible HOA issues.'
+        }
+      ],
+      reminders: [
+        {
+          item: 'Sawyer citation info',
+          detail: 'Need issuing agency + citation number to contest/delay.'
+        },
+        {
+          item: 'Text channel for ops',
+          detail: 'Wire up Twilio/shared line so Elliot can text Jimmy, Jon, Melissa.'
+        },
+        {
+          item: 'Ops build hour',
+          detail: 'Vendor DB, maintenance tracker, property folders, washer/dryer log.'
+        }
+      ]
+    };
+
+    const now = new Date().toLocaleString('en-US', {
+      weekday: 'short', month: 'short', day: 'numeric',
+      hour: 'numeric', minute: '2-digit', hour12: true
+    });
+    document.getElementById('timestamp').textContent = `Updated ${now}`;
+
+    const leadCards = document.getElementById('lead-cards');
+    state.leads.forEach(lead => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="pill">${lead.status}</div>
+        <h3>${lead.name}</h3>
+        <div class="meta">${lead.property}</div>
+        <p class="notes">${lead.next}</p>
+      `;
+      leadCards.appendChild(card);
+    });
+
+    const noticeCards = document.getElementById('notice-cards');
+    state.notices.forEach(notice => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="pill">${notice.status}</div>
+        <h3>${notice.property}</h3>
+        <div class="meta">${notice.deadline}</div>
+        <p class="notes">${notice.next}</p>
+      `;
+      noticeCards.appendChild(card);
+    });
+
+    const vendorCards = document.getElementById('vendor-cards');
+    state.vendors.forEach(vendor => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="pill">${vendor.status}</div>
+        <h3>${vendor.vendor}</h3>
+        <div class="meta">${vendor.property}</div>
+        <p class="notes">${vendor.next}</p>
+      `;
+      vendorCards.appendChild(card);
+    });
+
+    const fieldCards = document.getElementById('field-cards');
+    state.field.forEach(item => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <div class="pill">${item.status}</div>
+        <h3>${item.task}</h3>
+        <div class="meta">${item.owner}</div>
+        <p class="notes">${item.note}</p>
+      `;
+      fieldCards.appendChild(card);
+    });
+
+    const reminderCards = document.getElementById('reminder-cards');
+    state.reminders.forEach(reminder => {
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.innerHTML = `
+        <h3>${reminder.item}</h3>
+        <p class="notes">${reminder.detail}</p>
+      `;
+      reminderCards.appendChild(card);
+    });
+  </script>
+</body>
+</html>
