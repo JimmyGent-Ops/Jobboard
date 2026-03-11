@@ -189,6 +189,7 @@
       <button class="tab-btn" data-tab="sandy">Sandy</button>
       <button class="tab-btn" data-tab="jon">Jon</button>
       <button class="tab-btn" data-tab="melissa">Melissa</button>
+      <button class="tab-btn" data-tab="paul">Paul</button>
     </aside>
 
     <main class="content">
@@ -257,6 +258,13 @@
           <div id="melissa-cards" class="card-grid"></div>
         </div>
       </div>
+
+      <div id="tab-paul" class="tab-panel">
+        <div class="person-panel">
+          <h2>Paul Queue</h2>
+          <div id="paul-cards" class="card-grid"></div>
+        </div>
+      </div>
     </main>
   </div>
 
@@ -310,6 +318,9 @@
         { title: '852 Roundhouse – Running Toilet', status: 'Scheduling', notes: 'Coordinate Fidelity warranty call, lock appointment, confirm tenant.' },
         { title: 'Mariner Cove Rent-Ready Walk', status: 'Today', notes: 'Bring supplies, verify detectors, cabinets, cleanliness, document issues.' },
         { title: '4606 Neil Exterior Photos', status: 'Shared', notes: 'Capture exterior/storage views and send findings to Sandy & Jimmy.' }
+      ],
+      paul: [
+        { title: 'Assignments pending', status: 'Waiting input', notes: 'Send Paul’s current tasks or routes so this tab can be populated.' }
       ]
     };
 
@@ -398,6 +409,12 @@
     `);
 
     renderCards('melissa-cards', state.melissa, task => `
+      <div class="pill">${task.status}</div>
+      <h3>${task.title}</h3>
+      <p class="notes">${task.notes}</p>
+    `);
+
+    renderCards('paul-cards', state.paul, task => `
       <div class="pill">${task.status}</div>
       <h3>${task.title}</h3>
       <p class="notes">${task.notes}</p>
