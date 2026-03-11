@@ -272,7 +272,7 @@
     const state = {
       leads: [
         { name: 'Connie Sutton', property: '8330 Halladale', status: '$399k / $395k / $385k net sheets', next: 'Deliver the three versions and capture pricing feedback.' },
-        { name: 'Copperwood Listing', property: 'Copperwood, Reno', status: 'MLS launch pending', next: 'Load listing data, confirm measurements, schedule photos.' },
+        { name: 'Copperwood Listing', property: 'Copperwood, Reno', status: 'Live on MLS', next: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
         { name: 'Mariner Cove Tenant', property: 'Mariner Cove', status: 'Application review', next: 'Pick tenant with Sandy once rent-ready walk clears.' }
       ],
       notices: [
@@ -282,42 +282,41 @@
       vendors: [
         { vendor: 'American Leak Detection', property: '852 Roundhouse', status: '3/10 · 8:00 AM', next: 'Confirm Sandy was onsite + capture findings/repair callout.' },
         { vendor: 'Jet Plumbing', property: '7541 Cumberland', status: '3/9 · 12–2 PM', next: 'Need tenant access confirmation + tracker update.' },
-        { vendor: 'Groom Door Shop', property: 'Door rebuild', status: 'Awaiting check + pickup date', next: 'Drop payment, schedule pickup, notify Jon for reinstall.' }
+        { vendor: 'Door rebuild – Paul', property: 'Groom project', status: 'Need measurement + bid', next: 'Paul to pick vendor, send bid, and pencil in Thursday install once pricing/materials approved.' }
       ],
       field: [
         { owner: 'Melissa', task: 'Mariner Cove rent-ready walk', status: 'Today', note: 'Bring cleaning supplies, verify detectors, cabinets, cleanliness.' },
-        { owner: 'Jon', task: 'Largomarcino remote + keys', status: 'In progress', note: 'Program garage remote, cut/deliver keys so Melissa can shoot photos.' },
-        { owner: 'Jon & Melissa', task: '4606 Neil exterior set', status: 'Shared', note: 'Capture exterior/storage photos to flag possible HOA issues.' }
+        { owner: 'Jon', task: 'Largomarcino remote + keys', status: 'In progress', note: 'Program garage remote, cut/deliver keys so Melissa can shoot photos.' }
       ],
       reminders: [
         { item: 'Sawyer citation info', detail: 'Need issuing agency + citation number to contest/delay.' },
+        { item: '4606 Neil exterior photos', detail: 'Waiting on Sandy to confirm it’s done and send the files for the archive.' },
         { item: 'Text channel for ops', detail: 'Wire up Twilio/shared line so Elliot can text Jimmy, Jon, Melissa.' },
         { item: 'Ops build hour', detail: 'Vendor DB, maintenance tracker, property folders, washer/dryer log.' }
       ],
       jimmy: [
-        { title: 'Groom Door Vendor Call', status: 'Decision + check', notes: 'Pick vendor vs. in-house, drop payment, send pickup date.' },
+        { title: 'Groom Door – Get Paul’s bid', status: 'ASAP', notes: 'Have Paul send his measurement, vendor choice, bid, and tentative Thursday install window for approval.' },
         { title: 'Halladale Net Sheets', status: '$399k / 395k / 385k', notes: 'Deliver all three versions to Connie Sutton and log feedback.' },
-        { title: 'Copperwood MLS Launch', status: 'Prep', notes: 'Load listing copy/photos and confirm measurements before publishing.' },
-        { title: 'Sawyer Citation Info', status: 'Needed', notes: 'Send agency + citation number so notice can be contested.' },
+        { title: 'Mt. Whitney Tow Photos', status: 'Collect from Melissa', notes: 'Pull Melissa’s timestamp + photo set so the tow log can be filed.' },
+        { title: 'Copperwood MLS', status: 'Live – marketing push', notes: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
+        { title: 'Sawyer Citation Info', status: 'Needed', notes: 'Send agency + citation number so the notice can be contested.' },
         { title: 'SMS Channel for Ops', status: 'Choose platform', notes: 'Confirm Twilio/shared line so Elliot can text field teams + you.' }
       ],
       sandy: [
         { title: 'American Leak Detection – 852 Roundhouse', status: '3/10 · 8 AM', notes: 'Be onsite, inform downstairs neighbor, report findings.' },
         { title: 'Jet Plumbing – 7541 Cumberland', status: '3/9 · 12–2 PM', notes: 'Lock tenant access window and text confirmation.' },
+        { title: '4606 Neil Exterior Photos', status: 'Confirm/close', notes: 'Let Elliot know if the exterior/storage photos are done and where they’re saved.' },
         { title: 'Matterport vs. Zillow', status: 'Decision needed', notes: 'Review cost/downtime with Jimmy and decide whether to pause Matterport.' },
         { title: '30-day notice list', status: 'Outstanding', notes: 'Send any other addresses needing notices so paperwork can be queued.' }
       ],
       jon: [
-        { title: 'Mt. Whitney Vehicle Photos + VIN', status: 'Queued', notes: 'Grab full photo set + VIN once tenant/vehicle info arrives.' },
-        { title: 'Groom Door – Pull & Deliver', status: 'Stand by', notes: 'Coordinate with Jimmy before dropping at Groom door shop.' },
-        { title: 'Largomarcino remote + keys', status: 'In progress', notes: 'Program remote, cut/deliver keys before Melissa’s photo run.' },
-        { title: '4606 Neil Exterior Photos', status: 'Shared', notes: 'Partner with Melissa to document exterior/storage & flag HOA issues.' }
+        { title: 'Mt. Whitney VIN + photo log', status: 'Complete – organize', notes: 'Photos are in; drop them into the Drive folder named with the address + tenant once you have the files.' },
+        { title: 'Largomarcino remote + keys', status: 'In progress', notes: 'Program remote, cut/deliver keys before Melissa’s photo run.' }
       ],
       melissa: [
-        { title: 'Mt. Whitney Tow Notice Posting', status: 'Proof pending', notes: 'Provide timestamp + photos so 72-hour tow clock is logged.' },
+        { title: 'Mt. Whitney Tow Notice Posting', status: 'Complete – send files', notes: 'Posting is done; Jimmy still needs the timestamp + photo set from Melissa to lock the tow log.' },
         { title: '852 Roundhouse – Running Toilet', status: 'Scheduling', notes: 'Coordinate Fidelity warranty call, lock appointment, confirm tenant.' },
-        { title: 'Mariner Cove Rent-Ready Walk', status: 'Today', notes: 'Bring supplies, verify detectors, cabinets, cleanliness, document issues.' },
-        { title: '4606 Neil Exterior Photos', status: 'Shared', notes: 'Capture exterior/storage views and send findings to Sandy & Jimmy.' }
+        { title: 'Mariner Cove Rent-Ready Walk', status: 'Today', notes: 'Bring supplies, verify detectors, cabinets, cleanliness, document issues.' }
       ],
       paul: [
         { title: 'Groom Door – Measure & Vendor pick', status: 'Schedule now', notes: 'Set Paul’s measurement visit ASAP so he can choose his preferred vendor and confirm scope.' },
