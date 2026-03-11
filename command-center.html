@@ -229,6 +229,11 @@
           <h2>Reminders & Blocks</h2>
           <div id="reminder-cards" class="card-grid"></div>
         </section>
+
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Ops Projects</h2>
+          <div id="ops-cards" class="card-grid"></div>
+        </section>
       </div>
 
       <div id="tab-jimmy" class="tab-panel">
@@ -293,6 +298,11 @@
         { item: '4606 Neil exterior photos', detail: 'Waiting on Sandy to confirm it’s done and send the files for the archive.' },
         { item: 'Text channel for ops', detail: 'Wire up Twilio/shared line so Elliot can text Jimmy, Jon, Melissa.' },
         { item: 'Ops build hour', detail: 'Vendor DB, maintenance tracker, property folders, washer/dryer log.' }
+      ],
+      ops: [
+        { title: '760 Marsh – Furnace + Masonry', status: 'Send bid + onboard vendor', notes: 'Send the furnace bid email and onboard the approved masonry vendor.' },
+        { title: 'Weekly Ops Hour – System Buildout', status: 'Calendar block', notes: 'Use the weekly hour for the vendor DB, maintenance tracker, property folders, and washer/dryer tracking.' },
+        { title: 'Job Board & Comms', status: 'Live', notes: 'Maintain the GitHub Pages site and add SMS workflows once the platform is picked.' }
       ],
       jimmy: [
         { title: 'Groom Door – Get Paul’s bid', status: 'ASAP', notes: 'Have Paul send his measurement, vendor choice, bid, and tentative Thursday install window for approval.' },
@@ -390,6 +400,12 @@
     renderCards('reminder-cards', state.reminders, reminder => `
       <h3>${reminder.item}</h3>
       <p class="notes">${reminder.detail}</p>
+    `);
+
+    renderCards('ops-cards', state.ops, project => `
+      <div class="pill">${project.status}</div>
+      <h3>${project.title}</h3>
+      <p class="notes">${project.notes}</p>
     `);
 
     renderCards('jimmy-cards', state.jimmy, task => `
