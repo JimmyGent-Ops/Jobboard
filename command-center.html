@@ -139,6 +139,20 @@
       background: var(--pill-bg);
       color: var(--pill-text);
     }
+    .pill.warning {
+      background: rgba(248, 113, 113, 0.25);
+      color: var(--danger);
+    }
+    .alert-pill {
+      margin-left: auto;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      background: rgba(248, 113, 113, 0.2);
+      color: var(--danger);
+      display: none;
+    }
     .meta {
       color: var(--muted);
       font-size: 0.9rem;
@@ -185,6 +199,7 @@
       <div class="logo">Command Center</div>
       <div id="sidebar-timestamp" class="timestamp"></div>
       <button class="tab-btn active" data-tab="main">Overview</button>
+      <button class="tab-btn" data-tab="rentals">Rentals</button>
       <button class="tab-btn" data-tab="jimmy">Jimmy + Elliot</button>
       <button class="tab-btn" data-tab="sandy">Sandy</button>
       <button class="tab-btn" data-tab="jon">Jon</button>
@@ -198,9 +213,15 @@
           <h2>Command Overview</h2>
           <div class="grid">
             <div class="card" id="lead-summary"></div>
+            <div class="card" id="rental-summary"></div>
             <div class="card" id="notice-summary"></div>
             <div class="card" id="vendor-summary"></div>
           </div>
+        </section>
+
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Rental Showings <span id="rental-alert" class="alert-pill"></span></h2>
+          <div id="rental-showing-cards" class="card-grid"></div>
         </section>
 
         <div class="grid" style="margin-top: 18px;">
@@ -233,6 +254,17 @@
         <section class="panel" style="margin-top: 18px;">
           <h2>Ops Projects</h2>
           <div id="ops-cards" class="card-grid"></div>
+        </section>
+      </div>
+
+      <div id="tab-rentals" class="tab-panel">
+        <section class="panel">
+          <h2>Rental Pipeline</h2>
+          <div id="rental-tab-summary" class="card-grid"></div>
+        </section>
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Rental Showings</h2>
+          <div id="rental-tab-cards" class="card-grid"></div>
         </section>
       </div>
 
@@ -279,6 +311,11 @@
         { name: 'Connie Sutton', property: '8330 Halladale', status: '$399k / $395k / $385k net sheets', next: 'Deliver the three versions and capture pricing feedback.' },
         { name: 'Copperwood Listing', property: 'Copperwood, Reno', status: 'Live on MLS', next: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
         { name: 'Mariner Cove Tenant', property: 'Mariner Cove', status: 'Application review', next: 'Pick tenant with Sandy once rent-ready walk clears.' }
+      ],
+      rentalShowings: [
+        { lead: 'Eberardo Landeros', property: 'Mariner Cove', status: 'Awaiting approval', requested: 'Sat 3/15 · 10:00 AM', confirmed: '', owner: 'Jimmy', notes: 'Flexible, asked for earlier slot if possible.', needsApproval: true },
+        { lead: 'Marlene Plascencia', property: 'Mariner Cove', status: 'Confirmed', requested: 'Sat 3/15 · 11:30 AM', confirmed: 'Sat 3/15 · 11:30 AM', owner: 'Melissa', notes: 'Reminder scheduled; wants application link after showing.', needsApproval: false },
+        { lead: 'Justin Gettemeier', property: 'Mariner Cove', status: 'Need alternate', requested: 'Sun 3/16 afternoon', confirmed: '', owner: 'Jimmy', notes: 'Traveling Sunday; needs Tue window or open-house invite.', needsApproval: true }
       ],
       notices: [
         { property: '214 Red Oak', status: 'Draft ready', deadline: 'Move-out by Apr 30', next: 'Need tenant names + delivery method to send notice.' },
@@ -347,6 +384,34 @@
       <h3>Focus Leads</h3>
       <p class="notes">${state.leads.length} active: ${state.leads.map(l => l.name).join(', ')}.</p>
     `;
+    const rentalSummary = document.getElementById('rental-summary');
+    const rentalApprovals = state.rentalShowings.filter(show => show.needsApproval).length;
+    rentalSummary.innerHTML = `
+      <h3>Rental Showings</h3>
+      <p class="notes">${state.rentalShowings.length} booked · ${rentalApprovals} need approvals.</p>
+    `;
+    const rentalAlert = document.getElementById('rental-alert');
+    if (rentalApprovals > 0) {
+      rentalAlert.style.display = 'inline-flex';
+      rentalAlert.textContent = `${rentalApprovals} approval${rentalApprovals === 1 ? '' : 's'} needed`;
+    } else {
+      rentalAlert.style.display = 'none';
+    }
+    const rentalTabSummary = document.getElementById('rental-tab-summary');
+    if (rentalTabSummary) {
+      rentalTabSummary.innerHTML = `
+        <div class="card">
+          <div class="pill">Showings</div>
+          <h3>${state.rentalShowings.length} scheduled</h3>
+          <p class="notes">${rentalApprovals} awaiting approval.</p>
+        </div>
+        <div class="card">
+          <div class="pill">Tracker</div>
+          <h3>Rental Lead Sheet</h3>
+          <p class="notes"><a href="https://docs.google.com/spreadsheets/d/1GpdpMtNbbm8M8gCMIw8NCOhtS9-owKb3pl2DpEIy7IQ/edit" target="_blank">Open sheet ↗</a></p>
+        </div>
+      `;
+    }
     const noticeSummary = document.getElementById('notice-summary');
     noticeSummary.innerHTML = `
       <h3>Notice Queue</h3>
@@ -375,6 +440,17 @@
       <div class="meta">${lead.property}</div>
       <p class="notes">${lead.next}</p>
     `);
+
+    const rentalCardTemplate = show => `
+      <div class="pill ${show.needsApproval ? 'warning' : ''}">${show.status}</div>
+      <h3>${show.lead}</h3>
+      <div class="meta">${show.property} · Requested ${show.requested}</div>
+      <p class="notes">${show.notes}</p>
+      <div class="meta">Owner: ${show.owner}${show.confirmed ? ` · Confirmed ${show.confirmed}` : ' · Waiting on confirmation'}</div>
+    `;
+
+    renderCards('rental-showing-cards', state.rentalShowings, rentalCardTemplate);
+    renderCards('rental-tab-cards', state.rentalShowings, rentalCardTemplate);
 
     renderCards('notice-cards', state.notices, notice => `
       <div class="pill">${notice.status}</div>
