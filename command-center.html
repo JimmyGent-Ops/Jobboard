@@ -130,6 +130,20 @@
       margin: 0;
       font-size: 1rem;
     }
+    .call-btn {
+      margin-top: 8px;
+      padding: 6px 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(94, 234, 212, 0.3);
+      background: transparent;
+      color: var(--text);
+      font-size: 0.85rem;
+      cursor: pointer;
+    }
+    .call-btn[disabled] {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
     .pill {
       align-self: flex-start;
       padding: 2px 10px;
@@ -205,6 +219,7 @@
       <button class="tab-btn" data-tab="jon">Jon</button>
       <button class="tab-btn" data-tab="melissa">Melissa</button>
       <button class="tab-btn" data-tab="paul">Paul</button>
+      <button class="tab-btn" data-tab="links">Links &amp; Docs</button>
     </aside>
 
     <main class="content">
@@ -217,6 +232,16 @@
             <div class="card" id="notice-summary"></div>
             <div class="card" id="vendor-summary"></div>
           </div>
+        </section>
+
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Listings for Sale</h2>
+          <div id="listing-sale-cards" class="card-grid"></div>
+        </section>
+
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Pending Sales</h2>
+          <div id="pending-sale-cards" class="card-grid"></div>
         </section>
 
         <section class="panel" style="margin-top: 18px;">
@@ -266,6 +291,10 @@
           <h2>Rental Showings</h2>
           <div id="rental-tab-cards" class="card-grid"></div>
         </section>
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Lead Call Log</h2>
+          <div id="rental-lead-cards" class="card-grid"></div>
+        </section>
       </div>
 
       <div id="tab-jimmy" class="tab-panel">
@@ -302,6 +331,13 @@
           <div id="paul-cards" class="card-grid"></div>
         </div>
       </div>
+
+      <div id="tab-links" class="tab-panel">
+        <section class="panel">
+          <h2>Important Links &amp; Documents</h2>
+          <div id="link-cards" class="card-grid"></div>
+        </section>
+      </div>
     </main>
   </div>
 
@@ -309,22 +345,34 @@
     const state = {
       leads: [
         { name: 'Connie Sutton', property: '8330 Halladale', status: '$399k / $395k / $385k net sheets', next: 'Deliver the three versions and capture pricing feedback.' },
-        { name: 'Copperwood Listing', property: 'Copperwood, Reno', status: 'Live on MLS', next: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
+        { name: 'Copperwood Listing', property: 'Copperwood, Reno', status: 'Live on MLS', next: 'Build the table display, lock the open house weekend, finish the Zillow tour + walkthrough video, and send showing instructions.' },
+        { name: 'Cumberland Listing', property: '7541 Cumberland', status: 'Prep open house', next: 'Finish ceiling repair per M2 invoice and schedule the open house blast.' },
+        { name: '2124 Roundhouse Listing', property: '2124 Roundhouse (Ironhorse Condos)', status: 'Listing prep', next: 'Compile ALD docs, finalize photos, and get the MLS packet ready.' },
         { name: 'Mariner Cove Tenant', property: 'Mariner Cove', status: 'Application review', next: 'Pick tenant with Sandy once rent-ready walk clears.' }
       ],
       rentalShowings: [
-        { lead: 'Eberardo Landeros', property: 'Mariner Cove', status: 'Awaiting approval', requested: 'Sat 3/15 · 10:00 AM', confirmed: '', owner: 'Jimmy', notes: 'Flexible, asked for earlier slot if possible.', needsApproval: true },
-        { lead: 'Marlene Plascencia', property: 'Mariner Cove', status: 'Confirmed', requested: 'Sat 3/15 · 11:30 AM', confirmed: 'Sat 3/15 · 11:30 AM', owner: 'Melissa', notes: 'Reminder scheduled; wants application link after showing.', needsApproval: false },
-        { lead: 'Justin Gettemeier', property: 'Mariner Cove', status: 'Need alternate', requested: 'Sun 3/16 afternoon', confirmed: '', owner: 'Jimmy', notes: 'Traveling Sunday; needs Tue window or open-house invite.', needsApproval: true }
+      ],
+      listingsForSale: [
+        { name: '10493 Copper Wood Ct, Reno, NV 89521', price: '$795,000', details: '4 bd · 3 ba · 2,088 sq ft · MLS 260002558', link: 'https://www.zillow.com/homedetails/10493-Copper-Wood-Ct-Reno-NV-89521/7331565_zpid/', notes: 'Double Diamond · ensure furnace/masonry punch list stays on track.' },
+        { name: '7541 Cumberland Cir, Reno, NV 89511', price: '$395,000', details: '3 bd · 2.5 ba · 1,540 sq ft · MLS 260001950', link: 'https://www.zillow.com/homedetails/7541-Cumberland-Cir-Reno-NV-89511/7332731_zpid/', notes: 'Townhome listing · finish ceiling drywall + prep open house marketing.' }
+      ],
+      pendingSales: [
       ],
       notices: [
-        { property: '214 Red Oak', status: 'Draft ready', deadline: 'Move-out by Apr 30', next: 'Need tenant names + delivery method to send notice.' },
+        { property: '214 Red Oak', status: 'Send notice today', deadline: 'Move-out by Apr 30', next: 'Serve notice to Sayako N. Daly (natachadaly@yahoo.com, 310-938-4583) and Alexandro J. Vega (ajvega750@gmail.com, 757-528-3036).' },
+        { property: '11533 Andes – HOA paint notice', status: 'Extension + bids', deadline: 'Reply today · finish paint once quote approved', next: 'Complete the HOA resolution form requesting an extension while we gather exterior paint bids (Diversified/Santiago) and confirm full-scope pricing.' },
         { property: 'Additional 30-day notices', status: 'Needs list', deadline: 'Queue this week', next: 'Waiting on Sandy for any other addresses needing paperwork.' }
       ],
       vendors: [
+        { vendor: 'Stone View Sprinklers', property: 'Stone View', status: 'Schedule repair', next: 'Book the sprinkler contractor to fix the system and get completion photos/notes.' },
+        { vendor: '430 Shire Fireplace', property: '430 Shire', status: 'Schedule service', next: 'Set the fireplace technician visit and grab the service report for the file.' },
+        { vendor: 'Diversified Painting (Santiago)', property: '11533 Andes', status: 'Need full exterior quote', next: 'Call Santiago at Diversified Painting (775-358-8818 / office@diversifiedpainting.net) for pricing + schedule covering all painted surfaces, then log ETA for completion.' },
         { vendor: 'American Leak Detection', property: '852 Roundhouse', status: '3/10 · 8:00 AM', next: 'Confirm Sandy was onsite + capture findings/repair callout.' },
-        { vendor: 'Jet Plumbing', property: '7541 Cumberland', status: '3/9 · 12–2 PM', next: 'Need tenant access confirmation + tracker update.' },
-        { vendor: 'Door rebuild – Paul', property: 'Groom project', status: 'Need measurement + bid', next: 'Paul to pick vendor, send bid, and pencil in Thursday install once pricing/materials approved.' }
+        { vendor: 'Friendly Plumbing (Fidelity)', property: '852 Roundhouse', status: 'Need new visit', next: 'They hit the wrong unit; call via Fidelity claim to rebook and confirm access.' },
+        { vendor: 'Jet Plumbing', property: '7541 Cumberland', status: 'Awaiting confirmation', next: 'Check with Sandy whether the jobs are complete and update the tracker.' },
+        { vendor: 'Nevada Heating', property: '760 Marsh', status: 'Furnace replacement pending', next: 'Collect their W-9, then release the furnace replacement and lock an install date.' },
+        { vendor: 'Door rebuild – Paul', property: 'Groom project', status: 'Need measurement + bid', next: 'Paul to pick vendor, send bid, and pencil in Thursday install once pricing/materials approved.' },
+        { vendor: 'M2 Repairs', property: 'Copperwood + Cumberland', status: 'Pending repairs', next: 'Finish ceiling at Cumberland and remaining Copperwood items per the M2 invoice.' }
       ],
       field: [
         { owner: 'Melissa', task: 'Mariner Cove rent-ready walk', status: 'Today', note: 'Bring cleaning supplies, verify detectors, cabinets, cleanliness.' },
@@ -337,13 +385,30 @@
         { item: 'Ops build hour', detail: 'Vendor DB, maintenance tracker, property folders, washer/dryer log.' }
       ],
       ops: [
+        { title: 'Command Center Activity Log', status: 'Archive live', notes: 'Append every completed task to data/activity_logs/command_center_activity_log.csv (until Google Drive quota clears for a Sheet) so we have a permanent record.' },
+        { title: '760 Marsh Rent Target', status: '$2.9k–$3.15k', notes: 'Historic 3/2 (1,589 sq ft). See docs/properties/760_marsh_rent_analysis.md for comps + methodology.' },
         { title: 'Weekly Ops Hour – System Buildout', status: 'Calendar block', notes: 'Use the weekly hour for the vendor DB, maintenance tracker, property folders, and washer/dryer tracking.' },
         { title: 'Job Board & Comms', status: 'Live', notes: 'Maintain the GitHub Pages site and add SMS workflows once the platform is picked.' }
       ],
+      links: [
+        { title: 'Command Center Activity Log (CSV)', url: 'data/activity_logs/command_center_activity_log.csv', description: 'Download/open to append completed tasks until the Google Sheet is available.' },
+        { title: 'Rental Lead Tracker (Google Sheet)', url: 'https://docs.google.com/spreadsheets/d/1GpdpMtNbbm8M8gCMIw8NCOhtS9-owKb3pl2DpEIy7IQ/edit', description: 'Live rental intake + showings tabs.' },
+        { title: 'AI Operations Drive', url: 'https://drive.google.com/drive/folders/1MmapByyYhIm8zoRHoo_1VtimxL0XtHZ2?usp=drive_link', description: 'Shared Drive for trackers, templates, and shared files.' }
+      ],
       jimmy: [
+        { title: '852 Roundhouse – ALD docs', status: 'Need to schedule', notes: 'Block time to help Sandy finalize American Leak Detection paperwork + follow-up actions for Roundhouse.' },
+        { title: 'Window frame locks', status: 'Schedule install', notes: 'Line up a locksmith or handyman to add frame locks on the needed windows; confirm count + hardware spec.' },
+        { title: 'Washer repair check', status: 'Schedule visit', notes: 'Dispatch the appliance tech to verify the washer repair took, document the work order, and note any parts still pending.' },
+        { title: 'Closet hatch install', status: 'Need time slot', notes: 'Measure the opening, pick up materials, and get the installer booked to finish the closet hatch.' },
+        { title: 'Cumberland – ceiling drywall', status: 'Assign crew', notes: 'Coordinate with M2 Repairs to patch/finish the ceiling before showings and document completion.' },
+        { title: 'Contact list – Ross/Georgeson/Mace', status: 'Call or email', notes: 'Touch base with Ron Ross, Tim Ross, Dennis Ross, Darren Georgeson, and Erick Mace; log responses + next steps.' },
+        { title: 'Reconnect with Judge Derek', status: 'Intro follow-up', notes: 'Reach back out to District Judge Derek from the recent event and explore ways to collaborate.' },
+        { title: '2124 Roundhouse – leak & listing prep', status: 'Investigate leak', notes: 'Confirm if there’s an active leak, coordinate repairs, then push the condo live once it’s dry and documented.' },
+        { title: 'Stone View – sprinkler repair', status: 'Schedule vendor', notes: 'Book the irrigation contractor to fix the sprinkler issue at Stone View and confirm sign-off.' },
+        { title: '430 Shire – fireplace service', status: 'Schedule vendor', notes: 'Call the fireplace company to service 430 Shire and file the report for compliance.' },
         { title: 'Groom Door – Get Paul’s bid', status: 'ASAP', notes: 'Have Paul send his measurement, vendor choice, bid, and tentative Thursday install window for approval.' },
         { title: 'Halladale Net Sheets', status: '$399k / 395k / 385k', notes: 'Deliver all three versions to Connie Sutton and log feedback.' },
-        { title: '760 Marsh – Furnace + Masonry', status: 'Send bid + onboard vendor', notes: 'Send the furnace bid email and onboard the approved masonry vendor.' },
+        { title: '760 Marsh – Schedule furnace work', status: 'Waiting on W-9', notes: 'Once Nevada Heating sends their W-9, schedule the furnace replacement and loop in masonry for any follow-up work.' },
         { title: 'Mt. Whitney Tow Photos', status: 'Collect from Melissa', notes: 'Pull Melissa’s timestamp + photo set so the tow log can be filed.' },
         { title: 'Copperwood MLS', status: 'Live – marketing push', notes: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
         { title: 'Sawyer Citation Info', status: 'Needed', notes: 'Send agency + citation number so the notice can be contested.' },
@@ -373,6 +438,9 @@
       ]
     };
 
+    const RENTAL_ENDPOINT = (window.RENTAL_ENDPOINT || 'https://script.google.com/macros/s/AKfycbx6M4ev6h1v0DEpj29gdbAmA4gwXoUNBRCd6Q-84CEq-1c6dZXZkcEnZiWZQB3pY-y8Kg/exec').trim();
+    const RENTAL_ENDPOINT_READY = RENTAL_ENDPOINT && !RENTAL_ENDPOINT.includes('REPLACE_WITH_DEPLOYMENT_ID');
+
     const timestamp = new Date().toLocaleString('en-US', {
       weekday: 'short', month: 'short', day: 'numeric',
       hour: 'numeric', minute: '2-digit', hour12: true
@@ -385,32 +453,35 @@
       <p class="notes">${state.leads.length} active: ${state.leads.map(l => l.name).join(', ')}.</p>
     `;
     const rentalSummary = document.getElementById('rental-summary');
-    const rentalApprovals = state.rentalShowings.filter(show => show.needsApproval).length;
-    rentalSummary.innerHTML = `
-      <h3>Rental Showings</h3>
-      <p class="notes">${state.rentalShowings.length} booked · ${rentalApprovals} need approvals.</p>
-    `;
     const rentalAlert = document.getElementById('rental-alert');
-    if (rentalApprovals > 0) {
-      rentalAlert.style.display = 'inline-flex';
-      rentalAlert.textContent = `${rentalApprovals} approval${rentalApprovals === 1 ? '' : 's'} needed`;
-    } else {
-      rentalAlert.style.display = 'none';
-    }
     const rentalTabSummary = document.getElementById('rental-tab-summary');
-    if (rentalTabSummary) {
-      rentalTabSummary.innerHTML = `
-        <div class="card">
-          <div class="pill">Showings</div>
-          <h3>${state.rentalShowings.length} scheduled</h3>
-          <p class="notes">${rentalApprovals} awaiting approval.</p>
-        </div>
-        <div class="card">
-          <div class="pill">Tracker</div>
-          <h3>Rental Lead Sheet</h3>
-          <p class="notes"><a href="https://docs.google.com/spreadsheets/d/1GpdpMtNbbm8M8gCMIw8NCOhtS9-owKb3pl2DpEIy7IQ/edit" target="_blank">Open sheet ↗</a></p>
-        </div>
+    const rentalLeadCards = document.getElementById('rental-lead-cards');
+
+    function setRentalLoading() {
+      rentalSummary.innerHTML = `
+        <h3>Rental Showings</h3>
+        <p class="notes">${RENTAL_ENDPOINT_READY ? 'Loading live data…' : 'Set RENTAL_ENDPOINT to stream live data.'}</p>
       `;
+      rentalAlert.style.display = 'none';
+      if (rentalTabSummary) {
+        rentalTabSummary.innerHTML = `
+          <div class="card">
+            <h3>Rental pipeline</h3>
+            <p class="notes">${RENTAL_ENDPOINT_READY ? 'Waiting for data…' : 'Configure the apps script endpoint.'}</p>
+          </div>
+        `;
+      }
+      if (rentalLeadCards) {
+        rentalLeadCards.innerHTML = '<div class="card"><p class="notes">No leads loaded yet.</p></div>';
+      }
+      document.getElementById('rental-showing-cards').innerHTML = '';
+      document.getElementById('rental-tab-cards').innerHTML = '';
+    }
+
+    setRentalLoading();
+
+    if (RENTAL_ENDPOINT_READY) {
+      loadRentalData();
     }
     const noticeSummary = document.getElementById('notice-summary');
     noticeSummary.innerHTML = `
@@ -449,8 +520,138 @@
       <div class="meta">Owner: ${show.owner}${show.confirmed ? ` · Confirmed ${show.confirmed}` : ' · Waiting on confirmation'}</div>
     `;
 
-    renderCards('rental-showing-cards', state.rentalShowings, rentalCardTemplate);
-    renderCards('rental-tab-cards', state.rentalShowings, rentalCardTemplate);
+    async function loadRentalData() {
+      try {
+        const response = await fetch(RENTAL_ENDPOINT, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const data = await response.json();
+        updateRentalUI(data);
+      } catch (err) {
+        console.error('Rental data load failed', err);
+        rentalSummary.innerHTML = `
+          <h3>Rental Showings</h3>
+          <p class="notes">Unable to load rental data (${err.message}).</p>
+        `;
+        rentalAlert.style.display = 'none';
+      }
+    }
+
+    function updateRentalUI(data) {
+      const showings = data.showings || [];
+      const leads = data.leads || [];
+      const approvals = data.summary ? data.summary.approvalsNeeded : 0;
+      const scheduling = data.summary ? data.summary.scheduling : 0;
+      const firstCallPending = leads.filter(lead => !lead.firstCallLogged).length;
+
+      rentalSummary.innerHTML = `
+        <h3>Rental Showings</h3>
+        <p class="notes">${showings.length} booked · ${approvals} need approvals.</p>
+      `;
+      if (approvals > 0) {
+        rentalAlert.style.display = 'inline-flex';
+        rentalAlert.textContent = `${approvals} approval${approvals === 1 ? '' : 's'} needed`;
+      } else {
+        rentalAlert.style.display = 'none';
+      }
+
+      if (rentalTabSummary) {
+        rentalTabSummary.innerHTML = `
+          <div class="card">
+            <div class="pill">Leads</div>
+            <h3>${leads.length} active</h3>
+            <p class="notes">${scheduling} in scheduling.</p>
+          </div>
+          <div class="card">
+            <div class="pill">First calls</div>
+            <h3>${firstCallPending} pending</h3>
+            <p class="notes">Log the first call before texting/emailing follow-ups.</p>
+          </div>
+          <div class="card">
+            <div class="pill">Tracker</div>
+            <h3>Rental Lead Sheet</h3>
+            <p class="notes"><a href="https://docs.google.com/spreadsheets/d/1GpdpMtNbbm8M8gCMIw8NCOhtS9-owKb3pl2DpEIy7IQ/edit" target="_blank">Open sheet ↗</a></p>
+          </div>
+        `;
+      }
+
+      renderCards('rental-showing-cards', showings, rentalCardTemplate);
+      renderCards('rental-tab-cards', showings, rentalCardTemplate);
+      renderRentalLeads(leads);
+    }
+
+    function renderRentalLeads(leads) {
+      if (!rentalLeadCards) return;
+      rentalLeadCards.innerHTML = '';
+      if (!leads.length) {
+        rentalLeadCards.innerHTML = '<div class="card"><p class="notes">No active rental leads yet.</p></div>';
+        return;
+      }
+
+      leads.forEach(lead => {
+        const card = document.createElement('article');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="pill">${lead.status || 'New'}</div>
+          <h3>${lead.name || 'Unnamed lead'}</h3>
+          <div class="meta">${lead.interestedProperty || ''}</div>
+          <p class="notes">${lead.nextAction || 'No next action set.'}</p>
+          <p class="meta">${lead.phone || ''} · ${lead.email || ''}</p>
+          ${lead.firstCallLogged ? `<p class="meta">First call logged ${lead.firstCallTimestamp || ''}</p>` : '<p class="meta">First call pending</p>'}
+        `;
+
+        const button = document.createElement('button');
+        button.className = 'call-btn';
+        button.textContent = lead.firstCallLogged ? 'Call logged' : 'Mark first call done';
+        button.disabled = lead.firstCallLogged || !RENTAL_ENDPOINT_READY;
+        if (!lead.firstCallLogged && RENTAL_ENDPOINT_READY) {
+          button.addEventListener('click', () => logFirstCall(lead, button));
+        }
+        card.appendChild(button);
+        rentalLeadCards.appendChild(card);
+      });
+    }
+
+    async function logFirstCall(lead, button) {
+      if (!RENTAL_ENDPOINT_READY) return;
+      button.disabled = true;
+      const originalText = button.textContent;
+      button.textContent = 'Logging…';
+      try {
+        const res = await fetch(RENTAL_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'logFirstCall', rowNumber: lead.rowNumber })
+        });
+        const result = await res.json();
+        if (!res.ok || (!result.ok && !result.alreadyLogged)) {
+          throw new Error(result.error || 'Failed to log call');
+        }
+        loadRentalData();
+      } catch (err) {
+        console.error('First call log failed', err);
+        button.disabled = false;
+        button.textContent = 'Retry call log';
+      }
+    }
+
+    renderCards('listing-sale-cards', state.listingsForSale, listing => `
+      <div class="pill">${listing.price}</div>
+      <h3><a href="${listing.link}" target="_blank" rel="noopener noreferrer">${listing.name} ↗</a></h3>
+      <p class="notes">${listing.details}</p>
+      <div class="meta">${listing.notes}</div>
+    `);
+
+    const pendingContainer = document.getElementById('pending-sale-cards');
+    if (state.pendingSales.length === 0) {
+      pendingContainer.innerHTML = '<div class="card"><p class="notes">No pending sales logged.</p></div>';
+    } else {
+      renderCards('pending-sale-cards', state.pendingSales, sale => `
+        <div class="pill">${sale.status}</div>
+        <h3><a href="${sale.link}" target="_blank" rel="noopener noreferrer">${sale.name} ↗</a></h3>
+        <p class="notes">${sale.details}</p>
+        <div class="meta">${sale.notes}</div>
+      `);
+    }
 
     renderCards('notice-cards', state.notices, notice => `
       <div class="pill">${notice.status}</div>
@@ -512,6 +713,11 @@
       <div class="pill">${task.status}</div>
       <h3>${task.title}</h3>
       <p class="notes">${task.notes}</p>
+    `);
+
+    renderCards('link-cards', state.links, link => `
+      <h3><a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.title} ↗</a></h3>
+      <p class="notes">${link.description}</p>
     `);
 
     const buttons = document.querySelectorAll('.tab-btn');
