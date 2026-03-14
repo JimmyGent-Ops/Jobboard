@@ -619,7 +619,6 @@
       try {
         const res = await fetch(RENTAL_ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({ action: 'logFirstCall', rowNumber: lead.rowNumber })
         });
         const result = await res.json();
