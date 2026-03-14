@@ -358,6 +358,11 @@
           </section>
         </div>
 
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Leases To Do</h2>
+          <div id="lease-cards" class="card-grid"></div>
+        </section>
+
         <div class="grid" style="margin-top: 18px;">
           <section class="panel">
             <h2>Vendor & Field Queue</h2>
@@ -484,7 +489,10 @@
         { name: 'Connie Sutton', property: '8330 Halladale', status: '$399k / $395k / $385k net sheets', next: 'Deliver the three versions and capture pricing feedback.' },
         { name: 'Cumberland Listing', property: '7541 Cumberland', status: 'Prep open house', next: 'Finish ceiling repair per M2 invoice and schedule the open house blast.' },
         { name: '2124 Roundhouse Listing', property: '2124 Roundhouse (Ironhorse Condos)', status: 'Listing prep', next: 'Compile ALD docs, finalize photos, and get the MLS packet ready.' },
-        { name: 'Mariner Cove Tenant', property: 'Mariner Cove', status: 'Application review', next: 'Pick tenant with Sandy once rent-ready walk clears.' }
+      ],
+      leases: [
+        { property: '7771 Mariner Cove', status: 'Lease drafting', next: 'Pick tenant with Sandy, then prep the lease packet and send out for signatures.' },
+        { property: '1612 Prancer (Lot 39)', status: 'Lease queue', next: 'Lock the showing window, confirm the applicant, then draft the lease + delivery instructions.' },
       ],
       rentalShowings: [
       ],
@@ -895,6 +903,12 @@
       <h3>${notice.property}</h3>
       <div class="meta">${notice.deadline}</div>
       <p class="notes">${notice.next}</p>
+    `);
+
+    renderCards('lease-cards', state.leases, lease => `
+      <div class="pill">${lease.status}</div>
+      <h3>${lease.property}</h3>
+      <p class="notes">${lease.next}</p>
     `);
 
     renderCards('vendor-cards', state.vendors, vendor => `
