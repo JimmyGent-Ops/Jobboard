@@ -71,6 +71,27 @@
       color: #0d9488;
       font-weight: 600;
     }
+    .subtab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .subtab-btn {
+      border: 1px solid rgba(94, 234, 212, 0.2);
+      background: rgba(15, 23, 42, 0.6);
+      color: #e0e7ff;
+      border-radius: 18px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s ease, border 0.2s ease;
+    }
+    .subtab-btn.active {
+      background: rgba(94, 234, 212, 0.18);
+      border-color: rgba(94, 234, 212, 0.5);
+      color: #ffffff;
+    }
     .content {
       flex: 1;
       padding: clamp(20px, 3vw, 40px);
@@ -288,9 +309,10 @@
       <div id="sidebar-timestamp" class="timestamp"></div>
       <button class="tab-btn active" data-tab="main">Overview</button>
       <button class="tab-btn" data-tab="elliot">Elliot Actions / Timer</button>
-      <button class="tab-btn" data-tab="rentals">Rentals</button>
+      <button class="tab-btn" data-tab="rentals">Rental Showings</button>
       <button class="tab-btn" data-tab="jimmy">Jimmy + Elliot</button>
       <button class="tab-btn" data-tab="sandy">Sandy</button>
+      <button class="tab-btn" data-tab="m2">M2 Team</button>
       <button class="tab-btn" data-tab="jon">Jon</button>
       <button class="tab-btn" data-tab="melissa">Melissa</button>
       <button class="tab-btn" data-tab="paul">Paul</button>
@@ -399,6 +421,18 @@
           <h2>Sandy Queue</h2>
           <div id="sandy-cards" class="card-grid"></div>
         </div>
+      </div>
+
+      <div id="tab-m2" class="tab-panel">
+        <section class="panel">
+          <h2>M2 Team</h2>
+          <div class="subtab-bar">
+            <button class="subtab-btn active" data-person="jon">Jon</button>
+            <button class="subtab-btn" data-person="melissa">Melissa</button>
+            <button class="subtab-btn" data-person="paul">Paul</button>
+          </div>
+          <div id="m2-cards" class="card-grid"></div>
+        </section>
       </div>
 
       <div id="tab-jon" class="tab-panel">
@@ -918,6 +952,29 @@
       <h3>${task.title}</h3>
       <p class="notes">${task.notes}</p>
     `);
+
+    const m2Buttons = document.querySelectorAll('.subtab-btn');
+    let currentM2 = 'jon';
+
+    function renderM2(person) {
+      const data = state[person] || [];
+      renderCards('m2-cards', data, task => `
+        <div class="pill">${task.status}</div>
+        <h3>${task.title}</h3>
+        <p class="notes">${task.notes}</p>
+      `);
+    }
+
+    function activateM2(person) {
+      currentM2 = person;
+      m2Buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.person === person));
+      renderM2(person);
+    }
+
+    if (m2Buttons.length) {
+      activateM2(currentM2);
+      m2Buttons.forEach(btn => btn.addEventListener('click', () => activateM2(btn.dataset.person)));
+    }
 
     renderCards('link-cards', state.links, link => `
       <h3><a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.title} ↗</a></h3>
