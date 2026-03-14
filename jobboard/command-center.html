@@ -130,6 +130,80 @@
       margin: 0;
       font-size: 1rem;
     }
+    .calendar-toggle {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .cal-btn {
+      border: 1px solid rgba(94, 234, 212, 0.2);
+      border-radius: 999px;
+      background: transparent;
+      color: var(--text);
+      padding: 6px 14px;
+      font-size: 0.9rem;
+      cursor: pointer;
+      transition: background 0.2s ease, border 0.2s ease;
+    }
+    .cal-btn.active {
+      background: rgba(94, 234, 212, 0.18);
+      border-color: rgba(94, 234, 212, 0.45);
+      color: #0d9488;
+      font-weight: 600;
+    }
+    .calendar-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 14px;
+    }
+    .calendar-card {
+      background: var(--card);
+      border-radius: 18px;
+      padding: 16px;
+      border: 1px solid rgba(94, 234, 212, 0.15);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .calendar-card .calendar-time {
+      font-size: 0.85rem;
+      color: var(--muted);
+    }
+    .calendar-card .calendar-pill {
+      align-self: flex-start;
+      padding: 2px 10px;
+      border-radius: 999px;
+      background: rgba(94, 234, 212, 0.25);
+      color: var(--pill-text);
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .elliot-timer {
+      background: var(--card);
+      border-radius: 18px;
+      border: 1px solid rgba(94, 234, 212, 0.15);
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 18px;
+    }
+    .elliot-timer .timer-label {
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+    }
+    .elliot-timer h3 {
+      margin: 0;
+      font-size: 1.3rem;
+    }
+    .elliot-timer .timer-countdown {
+      font-size: 2.6rem;
+      font-weight: 600;
+      color: var(--accent);
+    }
     .call-btn {
       margin-top: 8px;
       padding: 6px 12px;
@@ -213,12 +287,14 @@
       <div class="logo">Command Center</div>
       <div id="sidebar-timestamp" class="timestamp"></div>
       <button class="tab-btn active" data-tab="main">Overview</button>
+      <button class="tab-btn" data-tab="elliot">Elliot Actions / Timer</button>
       <button class="tab-btn" data-tab="rentals">Rentals</button>
       <button class="tab-btn" data-tab="jimmy">Jimmy + Elliot</button>
       <button class="tab-btn" data-tab="sandy">Sandy</button>
       <button class="tab-btn" data-tab="jon">Jon</button>
       <button class="tab-btn" data-tab="melissa">Melissa</button>
       <button class="tab-btn" data-tab="paul">Paul</button>
+      <button class="tab-btn" data-tab="calendar">Calendar</button>
       <button class="tab-btn" data-tab="links">Links &amp; Docs</button>
     </aside>
 
@@ -282,6 +358,20 @@
         </section>
       </div>
 
+      <div id="tab-elliot" class="tab-panel">
+        <section class="panel">
+          <h2>Elliot Actions / Timer</h2>
+          <div class="elliot-timer">
+            <div class="timer-label">Current Task</div>
+            <h3 id="elliot-task">--</h3>
+            <div id="elliot-countdown" class="timer-countdown">--:--</div>
+            <p id="elliot-eta" class="notes"></p>
+          </div>
+          <h3 style="margin-top:0;">Upcoming Queue</h3>
+          <div id="elliot-queue" class="card-grid"></div>
+        </section>
+      </div>
+
       <div id="tab-rentals" class="tab-panel">
         <section class="panel">
           <h2>Rental Pipeline</h2>
@@ -330,6 +420,19 @@
           <h2>Paul Queue</h2>
           <div id="paul-cards" class="card-grid"></div>
         </div>
+      </div>
+
+      <div id="tab-calendar" class="tab-panel">
+        <section class="panel">
+          <h2>Cron Calendar</h2>
+          <div class="calendar-toggle">
+            <button class="cal-btn active" data-range="daily">Daily</button>
+            <button class="cal-btn" data-range="weekly">Weekly</button>
+            <button class="cal-btn" data-range="monthly">Monthly</button>
+          </div>
+          <p id="calendar-summary" class="notes"></p>
+          <div id="calendar-cards" class="calendar-grid"></div>
+        </section>
       </div>
 
       <div id="tab-links" class="tab-panel">
@@ -390,6 +493,108 @@
         { title: 'Weekly Ops Hour – System Buildout', status: 'Calendar block', notes: 'Use the weekly hour for the vendor DB, maintenance tracker, property folders, and washer/dryer tracking.' },
         { title: 'Job Board & Comms', status: 'Live', notes: 'Maintain the GitHub Pages site and add SMS workflows once the platform is picked.' }
       ],
+      cronJobs: [
+        {
+          id: 'ef76981e-bfd0-490d-b434-aa284886e0c2',
+          name: 'Gmail hourly check',
+          type: 'cron',
+          scheduleLabel: 'Cron · 0 9-19 * * * (PT)',
+          description: 'Run python scripts/check_email.py, relay inbox summary hourly between 9 AM and 7 PM PT.',
+          nextRun: 1773514853068
+        },
+        {
+          id: '98358ba9-18a0-4710-8d7b-68ea43cf1975',
+          name: 'Morning brief reminder',
+          type: 'cron',
+          scheduleLabel: 'Cron · 45 13 * * * (PT)',
+          description: 'Prepare and send the morning brief (headlines, weather, action items).',
+          nextRun: 1773521100000
+        },
+        {
+          id: '77a4eb00-463b-48bb-989b-f9b92e0b02ee',
+          name: 'Morning brief email script',
+          type: 'cron',
+          scheduleLabel: 'Cron · 0 7 * * * (PT)',
+          description: 'Run send_morning_brief.py and confirm the email delivered.',
+          nextRun: 1773583200000
+        },
+        {
+          id: '768445e9-4110-408f-81f9-3cec99176173',
+          name: '214 Red Oak notice check',
+          type: 'cron',
+          scheduleLabel: 'Cron · 0 8 * * * (PT)',
+          description: 'Reminder to draft/send the 214 Red Oak move-out notice.',
+          nextRun: 1773586800000
+        },
+        {
+          id: 'a53fcfcf-9b9e-40b3-b8e3-692285d135c0',
+          name: 'Email Sandy re: notices/leads',
+          type: 'cron',
+          scheduleLabel: 'Cron · 30 8 * * * (PT)',
+          description: 'Ping Sandy for the current 30-day notices + top rental leads.',
+          nextRun: 1773588600000
+        },
+        {
+          id: 'a6fa1bd5-7174-4eb1-b460-cce1cd38e046',
+          name: 'Connie Sutton follow-up',
+          type: 'cron',
+          scheduleLabel: 'Cron · 0 9 * * * (PT)',
+          description: 'Check in on Connie Sutton (Halladale net sheets, pricing feedback).',
+          nextRun: 1773590400000
+        },
+        {
+          id: '7307496a-d2de-4524-9fcf-11d7b8ffa933',
+          name: 'Weekly ops systems hour',
+          type: 'cron',
+          scheduleLabel: 'Cron · 0 9 * * 1 (PT)',
+          description: 'One-hour block to advance ops systems (vendor DB, trackers, logs).',
+          nextRun: 1773676800000
+        },
+        {
+          id: '4be9b223-e581-4ae5-94dd-c61abe47b03f',
+          name: 'Connie net sheets delivery',
+          type: 'cron',
+          scheduleLabel: 'Cron · 0 8 * * 4,5 (PT)',
+          description: 'Remind Jimmy to prep/hand-deliver Connie’s $399k / $395k / $385k sheets.',
+          nextRun: 1773932400000
+        },
+        {
+          id: 'b9c80dd7-ae5e-4010-93e2-35e5768c95e2',
+          name: 'Revisit ops calendar idea',
+          type: 'at',
+          scheduleLabel: 'One-time · Mar 20, 2026 · 9:00 AM PT',
+          description: 'Bring up the Ops Schedule calendar staffing idea if it hasn’t been requested yet.',
+          nextRun: 1774022400000
+        },
+        {
+          id: '6b2cb8a4-841e-46f3-82a0-9aa67831cb93',
+          name: 'Ray PM referral follow-up',
+          type: 'every',
+          scheduleLabel: 'Every ~30 days',
+          description: 'Touch base with Ray (775-762-2169) about property management referrals.',
+          nextRun: 1775282647944
+        }
+      ],
+      elliotActions: {
+        current: {
+          task: 'Rental lead follow-ups + drafts',
+          etaMinutes: 120,
+          availableAt: '2026-03-14T21:30:00Z',
+          detail: 'Finishing guest-card replies and prepping Gmail drafts.'
+        },
+        queue: [
+          {
+            task: 'Command Center calendar polish',
+            etaLabel: 'Next · 15 min block',
+            detail: 'Tidy styling + add conflict badges for cron calendar.'
+          },
+          {
+            task: 'Ops tracker cleanup',
+            etaLabel: 'Later today',
+            detail: 'Archive stale tasks in tasks/todo.md and refresh the job board cards.'
+          }
+        ]
+      },
       links: [
         { title: 'Command Center Activity Log (CSV)', url: 'data/activity_logs/command_center_activity_log.csv', description: 'Download/open to append completed tasks until the Google Sheet is available.' },
         { title: 'Rental Lead Tracker (Google Sheet)', url: 'https://docs.google.com/spreadsheets/d/1GpdpMtNbbm8M8gCMIw8NCOhtS9-owKb3pl2DpEIy7IQ/edit', description: 'Live rental intake + showings tabs.' },
@@ -718,6 +923,120 @@
       <h3><a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.title} ↗</a></h3>
       <p class="notes">${link.description}</p>
     `);
+
+    const calendarButtons = document.querySelectorAll('.cal-btn');
+    const calendarSummary = document.getElementById('calendar-summary');
+    const calendarContainer = document.getElementById('calendar-cards');
+
+    function formatCalendarDate(ms) {
+      if (!ms) return 'Next run TBD';
+      return new Date(ms).toLocaleString('en-US', {
+        weekday: 'short',
+        month: 'short',
+        day: 'numeric',
+        hour: 'numeric',
+        minute: '2-digit'
+      });
+    }
+
+    function getRangeWindow(range) {
+      const day = 24 * 60 * 60 * 1000;
+      if (range === 'weekly') return day * 7;
+      if (range === 'monthly') return day * 30;
+      return day;
+    }
+
+    function renderCalendar(range = 'daily') {
+      if (!calendarContainer) return;
+      const now = Date.now();
+      const windowMs = getRangeWindow(range);
+      const filtered = state.cronJobs
+        .filter(job => {
+          if (!job.nextRun) return true;
+          return job.nextRun - now <= windowMs;
+        })
+        .sort((a, b) => (a.nextRun || 0) - (b.nextRun || 0));
+
+      if (filtered.length === 0) {
+        calendarContainer.innerHTML = '<div class="calendar-card"><p class="notes">No cron jobs scheduled in this window.</p></div>';
+      } else {
+        calendarContainer.innerHTML = filtered.map(job => `
+          <div class="calendar-card">
+            <div class="calendar-pill">${job.type === 'cron' ? 'Recurring' : job.type === 'at' ? 'One-time' : 'Interval'}</div>
+            <h3>${job.name}</h3>
+            <div class="calendar-time">${formatCalendarDate(job.nextRun)}</div>
+            <p class="notes">${job.description}</p>
+            <div class="meta">${job.scheduleLabel}</div>
+          </div>
+        `).join('');
+      }
+
+      const labelMap = { daily: 'the next 24 hours', weekly: 'the next 7 days', monthly: 'the next 30 days' };
+      if (calendarSummary) {
+        calendarSummary.textContent = `${filtered.length} cron job${filtered.length === 1 ? '' : 's'} scheduled in ${labelMap[range] || 'this window'}.`;
+      }
+    }
+
+    if (calendarButtons.length) {
+      calendarButtons.forEach(btn => btn.addEventListener('click', () => {
+        calendarButtons.forEach(b => b.classList.toggle('active', b === btn));
+        renderCalendar(btn.dataset.range);
+      }));
+      renderCalendar('daily');
+    }
+
+    const elliotTaskEl = document.getElementById('elliot-task');
+    const elliotCountdownEl = document.getElementById('elliot-countdown');
+    const elliotEtaEl = document.getElementById('elliot-eta');
+    const elliotQueueEl = document.getElementById('elliot-queue');
+    let elliotTimerId;
+
+    function startElliotTimer() {
+      if (!elliotTaskEl || !state.elliotActions || !state.elliotActions.current) return;
+      const current = state.elliotActions.current;
+      elliotTaskEl.textContent = current.task || '—';
+      const fallbackTarget = Date.now() + (current.etaMinutes || 0) * 60000;
+      const explicitTarget = current.availableAt ? Date.parse(current.availableAt) : NaN;
+      const target = Number.isFinite(explicitTarget) ? explicitTarget : fallbackTarget;
+      if (elliotEtaEl) {
+        const availableLabel = new Date(target).toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' });
+        elliotEtaEl.textContent = `Available at ${availableLabel}${current.detail ? ' · ' + current.detail : ''}`;
+      }
+      function updateCountdown() {
+        const diff = target - Date.now();
+        if (!elliotCountdownEl) return;
+        if (diff <= 0) {
+          elliotCountdownEl.textContent = '00:00';
+          if (elliotEtaEl) elliotEtaEl.textContent = `Available now${current.detail ? ' · ' + current.detail : ''}`;
+          if (elliotTimerId) clearInterval(elliotTimerId);
+          return;
+        }
+        const mins = Math.floor(diff / 60000);
+        const secs = Math.floor((diff % 60000) / 1000);
+        elliotCountdownEl.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      }
+      updateCountdown();
+      elliotTimerId = setInterval(updateCountdown, 1000);
+    }
+
+    function renderElliotQueue() {
+      if (!elliotQueueEl) return;
+      const queue = (state.elliotActions && state.elliotActions.queue) || [];
+      if (!queue.length) {
+        elliotQueueEl.innerHTML = '<div class="card"><p class="notes">No upcoming tasks queued.</p></div>';
+        return;
+      }
+      elliotQueueEl.innerHTML = queue.map(item => `
+        <div class="card">
+          <div class="pill">${item.etaLabel || 'Next'}</div>
+          <h3>${item.task}</h3>
+          <p class="notes">${item.detail || ''}</p>
+        </div>
+      `).join('');
+    }
+
+    startElliotTimer();
+    renderElliotQueue();
 
     const buttons = document.querySelectorAll('.tab-btn');
     const panels = document.querySelectorAll('.tab-panel');
