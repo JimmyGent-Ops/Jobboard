@@ -777,9 +777,9 @@
       <div class="meta">${show.property}</div>
       <ul class="card-bullets">
         <li>Requested: ${show.requested}</li>
-        ${show.confirmed ? `<li>Confirmed: ${show.confirmed}</li>` : ''}
+        ${show.confirmed ? '<li>Confirmed: ' + show.confirmed + '</li>' : ''}
         <li>Owner: ${show.owner}${show.needsApproval ? ' · Needs approval' : ''}</li>
-        ${show.notes ? `<li>${show.notes}</li>` : ''}
+        ${show.notes ? '<li>' + show.notes + '</li>' : ''}
       </ul>
     `;
 
