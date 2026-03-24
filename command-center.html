@@ -1345,10 +1345,11 @@
       leadRaceState.loading = true;
       updateLeadRaceButtons();
       try {
+        const payload = JSON.stringify({ contact_id: target.contact_id, action, by: `LeadRace-${team}` });
         const res = await fetch(LEAD_RACE_ACTION_ENDPOINT, {
           method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ contact_id: target.contact_id, action, by: `LeadRace-${team}` })
+          headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+          body: payload
         });
         if (!res.ok) {
           const payload = await res.json().catch(() => ({}));
