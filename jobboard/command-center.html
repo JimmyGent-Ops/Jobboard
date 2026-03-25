@@ -1368,9 +1368,9 @@
           headers: { 'Content-Type': 'text/plain' },
           body: payload
         });
-        if (!res.ok) {
-          const payload = await res.json().catch(() => ({}));
-          throw new Error(payload.error || `HTTP ${res.status}`);
+        const result = await res.json().catch(() => ({}));
+        if (!res.ok || result.ok === false) {
+          throw new Error(result.message || result.error || `HTTP ${res.status}`);
         }
         await loadLeadRaceQueue();
       } catch (err) {
