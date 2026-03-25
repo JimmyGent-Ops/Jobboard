@@ -1346,7 +1346,7 @@
       ['jimmy', 'sandy'].forEach(team => {
         const hasLead = !!leadRaceState.active[team];
         document.querySelectorAll(`.race-action-btn[data-team="${team}"]`).forEach(btn => {
-          btn.disabled = !hasLead || leadRaceState.loading || !LEAD_RACE_ACTION_ENDPOINT;
+          btn.disabled = !hasLead || leadRaceState.loading;
         });
       });
     }
