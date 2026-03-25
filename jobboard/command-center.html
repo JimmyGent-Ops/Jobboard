@@ -71,6 +71,38 @@
       color: #0d9488;
       font-weight: 600;
     }
+    .subtab-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-bottom: 12px;
+    }
+    .subtab-btn {
+      border: 1px solid rgba(94, 234, 212, 0.2);
+      background: rgba(15, 23, 42, 0.6);
+      color: #e0e7ff;
+      border-radius: 18px;
+      padding: 6px 14px;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: background 0.2s ease, border 0.2s ease;
+    }
+    .subtab-btn.active {
+      background: rgba(94, 234, 212, 0.18);
+      border-color: rgba(94, 234, 212, 0.5);
+      color: #ffffff;
+    }
+    .card-bullets {
+      list-style: disc;
+      padding-left: 18px;
+      margin: 10px 0 0;
+      color: #94a3b8;
+      font-size: 0.95rem;
+      line-height: 1.35;
+    }
+    .card-bullets li + li {
+      margin-top: 4px;
+    }
     .content {
       flex: 1;
       padding: clamp(20px, 3vw, 40px);
@@ -259,6 +291,186 @@
     .person-panel h2 {
       margin: 0 0 12px;
     }
+    .lead-race-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 22px;
+    }
+    .race-hero {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.9));
+      border-radius: 26px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: clamp(16px, 2.5vw, 28px);
+    }
+    .race-host {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex: 1 1 320px;
+      min-width: 280px;
+    }
+    .race-pixel {
+      width: clamp(90px, 10vw, 120px);
+      height: clamp(90px, 10vw, 120px);
+      border-radius: 18px;
+      background: repeating-linear-gradient(45deg, #1f2937, #1f2937 6px, #0f172a 6px, #0f172a 12px);
+      border: 2px solid rgba(94, 234, 212, 0.25);
+      box-shadow: inset 0 0 25px rgba(94, 234, 212, 0.25);
+      position: relative;
+    }
+    .race-pixel::after {
+      content: '';
+      position: absolute;
+      inset: 14px;
+      border: 2px solid rgba(226, 232, 240, 0.4);
+      border-radius: 6px;
+    }
+    .race-host-text h3 {
+      margin: 0;
+      font-size: clamp(1.2rem, 2vw, 1.6rem);
+    }
+    .race-host-text p {
+      margin: 4px 0 0;
+      font-size: 1rem;
+      color: var(--muted);
+    }
+    .race-goal {
+      flex: 1 1 260px;
+      min-width: 240px;
+      background: rgba(15, 23, 42, 0.8);
+      border-radius: 20px;
+      padding: 18px;
+      border: 1px solid rgba(94, 234, 212, 0.2);
+    }
+    .race-goal h4 {
+      margin: 0 0 6px;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+    }
+    .race-scoreboard {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 16px;
+    }
+    .race-card {
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      border-radius: 22px;
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .race-pill {
+      align-self: flex-start;
+      padding: 2px 12px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      background: rgba(94, 234, 212, 0.18);
+      color: var(--accent);
+    }
+    .race-progress {
+      width: 100%;
+      height: 10px;
+      border-radius: 999px;
+      background: rgba(148, 163, 184, 0.2);
+      overflow: hidden;
+    }
+    .race-progress span {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: linear-gradient(90deg, #34d399, #22d3ee);
+      transition: width 0.4s ease;
+    }
+    .race-columns {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 18px;
+    }
+    .race-column {
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 24px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      padding: 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .race-column header {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+    .race-column header span {
+      font-size: 0.9rem;
+      color: var(--muted);
+    }
+    .race-column.jimmy {
+      border-color: rgba(96, 165, 250, 0.35);
+    }
+    .race-column.sandy {
+      border-color: rgba(248, 196, 173, 0.35);
+    }
+    .race-column .race-actions {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(70px, 1fr));
+      gap: 8px;
+    }
+    .race-action-btn {
+      padding: 10px 0;
+      border-radius: 12px;
+      border: 1px solid rgba(148, 163, 184, 0.3);
+      background: rgba(15, 23, 42, 0.7);
+      color: var(--text);
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: not-allowed;
+    }
+    .race-action-btn.delete {
+      border-color: rgba(248, 113, 113, 0.5);
+      color: rgba(248, 113, 113, 0.9);
+    }
+    .race-queue-list {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .race-queue-card {
+      border-radius: 18px;
+      border: 1px solid rgba(94, 234, 212, 0.15);
+      padding: 14px;
+      background: rgba(2, 6, 23, 0.5);
+      transition: border 0.2s ease, background 0.2s ease;
+    }
+    .race-queue-card.active {
+      border-color: rgba(94, 234, 212, 0.4);
+      background: rgba(4, 12, 32, 0.75);
+    }
+    .race-queue-card h4 {
+      margin: 0;
+      font-size: 1.05rem;
+    }
+    .race-queue-card .meta {
+      font-size: 0.9rem;
+      color: var(--muted);
+      margin: 4px 0;
+    }
+    .race-empty {
+      border: 1px dashed rgba(148, 163, 184, 0.4);
+      border-radius: 18px;
+      padding: 18px;
+      text-align: center;
+      color: var(--muted);
+      font-size: 0.95rem;
+    }
     @media (max-width: 900px) {
       body {
         flex-direction: column;
@@ -282,15 +494,26 @@
   </style>
 </head>
 <body>
+  <script>
+    (function() {
+      const localHosts = ['', 'localhost', '127.0.0.1'];
+      const host = (window.location.hostname || '').toLowerCase();
+      if (window.location.protocol === 'file:' || localHosts.includes(host)) {
+        window.LEAD_RACE_API = window.LEAD_RACE_API || 'http://127.0.0.1:5577/api/lead-race';
+      }
+    })();
+  </script>
   <div class="layout">
     <aside class="sidebar">
       <div class="logo">Command Center</div>
       <div id="sidebar-timestamp" class="timestamp"></div>
       <button class="tab-btn active" data-tab="main">Overview</button>
       <button class="tab-btn" data-tab="elliot">Elliot Actions / Timer</button>
-      <button class="tab-btn" data-tab="rentals">Rentals</button>
+      <button class="tab-btn" data-tab="rentals">Rental Showings</button>
+      <button class="tab-btn" data-tab="race">Lead Race</button>
       <button class="tab-btn" data-tab="jimmy">Jimmy + Elliot</button>
       <button class="tab-btn" data-tab="sandy">Sandy</button>
+      <button class="tab-btn" data-tab="m2">M2 Team</button>
       <button class="tab-btn" data-tab="jon">Jon</button>
       <button class="tab-btn" data-tab="melissa">Melissa</button>
       <button class="tab-btn" data-tab="paul">Paul</button>
@@ -335,6 +558,11 @@
             <div id="notice-cards" class="card-grid"></div>
           </section>
         </div>
+
+        <section class="panel" style="margin-top: 18px;">
+          <h2>Leases To Do</h2>
+          <div id="lease-cards" class="card-grid"></div>
+        </section>
 
         <div class="grid" style="margin-top: 18px;">
           <section class="panel">
@@ -387,7 +615,72 @@
         </section>
       </div>
 
-      <div id="tab-jimmy" class="tab-panel">
+      <div id="tab-race" class="tab-panel">
+        <div class="lead-race-panel">
+          <section class="race-hero">
+            <div class="race-host">
+              <div class="race-pixel" aria-hidden="true"></div>
+              <div class="race-host-text">
+                <h3>Lead Race Telethon</h3>
+                <p id="race-hero-cheer">Loading queue&hellip;</p>
+              </div>
+            </div>
+            <div class="race-goal">
+              <h4>$15M Reno/Sparks goal</h4>
+              <p class="notes">30 closings &times; $500K avg ticket. Let's sort every contact and celebrate every past client upgrade.</p>
+            </div>
+          </section>
+
+          <section class="race-scoreboard" id="race-scoreboard">
+            <div class="race-card">
+              <div class="race-pill">Loading</div>
+              <h3>Fetching lead queue&hellip;</h3>
+              <p class="notes">Please wait.</p>
+            </div>
+          </section>
+
+          <section class="race-columns">
+            <div class="race-column jimmy">
+              <header>
+                <div>Team Jimmy</div>
+                <span id="race-jimmy-count">-- queued</span>
+              </header>
+              <p class="notes" id="race-jimmy-blurb">Blue lane = Jimmy's personal leads, parsed from Top Producer + inbox drops.</p>
+              <div class="race-actions">
+                <button class="race-action-btn" data-team="jimmy" data-action="A">A</button>
+                <button class="race-action-btn" data-team="jimmy" data-action="B">B</button>
+                <button class="race-action-btn" data-team="jimmy" data-action="C">C</button>
+                <button class="race-action-btn" data-team="jimmy" data-action="D">D</button>
+                <button class="race-action-btn" data-team="jimmy" data-action="F">F</button>
+                <button class="race-action-btn" data-team="jimmy" data-action="skip">Skip</button>
+                <button class="race-action-btn delete" data-team="jimmy" data-action="delete">Delete</button>
+              </div>
+              <div class="race-queue-list" id="race-jimmy-queue">
+                <div class="race-empty">Queue loading&hellip;</div>
+              </div>
+            </div>
+            <div class="race-column sandy">
+              <header>
+                <div>Team Sandy</div>
+                <span id="race-sandy-count">-- queued</span>
+              </header>
+              <p class="notes" id="race-sandy-blurb">Coral lane = Sandy's imports (lead sheet + Top Producer detailed export).</p>
+              <div class="race-actions">
+                <button class="race-action-btn" data-team="sandy" data-action="A">A</button>
+                <button class="race-action-btn" data-team="sandy" data-action="B">B</button>
+                <button class="race-action-btn" data-team="sandy" data-action="C">C</button>
+                <button class="race-action-btn" data-team="sandy" data-action="D">D</button>
+                <button class="race-action-btn" data-team="sandy" data-action="F">F</button>
+                <button class="race-action-btn" data-team="sandy" data-action="skip">Skip</button>
+                <button class="race-action-btn delete" data-team="sandy" data-action="delete">Delete</button>
+              </div>
+              <div class="race-queue-list" id="race-sandy-queue">
+                <div class="race-empty">Queue loading&hellip;</div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>      <div id="tab-jimmy" class="tab-panel">
         <div class="person-panel">
           <h2>Jimmy + Elliot Projects</h2>
           <div id="jimmy-cards" class="card-grid"></div>
@@ -399,6 +692,18 @@
           <h2>Sandy Queue</h2>
           <div id="sandy-cards" class="card-grid"></div>
         </div>
+      </div>
+
+      <div id="tab-m2" class="tab-panel">
+        <section class="panel">
+          <h2>M2 Team</h2>
+          <div class="subtab-bar">
+            <button class="subtab-btn active" data-person="jon">Jon</button>
+            <button class="subtab-btn" data-person="melissa">Melissa</button>
+            <button class="subtab-btn" data-person="paul">Paul</button>
+          </div>
+          <div id="m2-cards" class="card-grid"></div>
+        </section>
       </div>
 
       <div id="tab-jon" class="tab-panel">
@@ -448,10 +753,11 @@
     const state = {
       leads: [
         { name: 'Connie Sutton', property: '8330 Halladale', status: '$399k / $395k / $385k net sheets', next: 'Deliver the three versions and capture pricing feedback.' },
-        { name: 'Copperwood Listing', property: 'Copperwood, Reno', status: 'Live on MLS', next: 'Build the table display, lock the open house weekend, finish the Zillow tour + walkthrough video, and send showing instructions.' },
-        { name: 'Cumberland Listing', property: '7541 Cumberland', status: 'Prep open house', next: 'Finish ceiling repair per M2 invoice and schedule the open house blast.' },
         { name: '2124 Roundhouse Listing', property: '2124 Roundhouse (Ironhorse Condos)', status: 'Listing prep', next: 'Compile ALD docs, finalize photos, and get the MLS packet ready.' },
-        { name: 'Mariner Cove Tenant', property: 'Mariner Cove', status: 'Application review', next: 'Pick tenant with Sandy once rent-ready walk clears.' }
+      ],
+      leases: [
+        { property: '7771 Mariner Cove', status: 'Lease drafting', next: 'Pick tenant with Sandy, then prep the lease packet and send out for signatures.' },
+        { property: '1612 Prancer (Lot 39)', status: 'Lease queue', next: 'Lock the showing window, confirm the applicant, then draft the lease + delivery instructions.' },
       ],
       rentalShowings: [
       ],
@@ -463,7 +769,8 @@
       ],
       notices: [
         { property: '214 Red Oak', status: 'Send notice today', deadline: 'Move-out by Apr 30', next: 'Serve notice to Sayako N. Daly (natachadaly@yahoo.com, 310-938-4583) and Alexandro J. Vega (ajvega750@gmail.com, 757-528-3036).' },
-        { property: '11533 Andes – HOA paint notice', status: 'Extension + bids', deadline: 'Reply today · finish paint once quote approved', next: 'Complete the HOA resolution form requesting an extension while we gather exterior paint bids (Diversified/Santiago) and confirm full-scope pricing.' },
+        { property: '11533 Andes - HOA paint notice', status: 'Extension + bids', deadline: 'Reply today · finish paint once quote approved', next: 'Complete the HOA resolution form requesting an extension while we gather exterior paint bids (Diversified/Santiago) and confirm full-scope pricing.' },
+        { property: '1355 Westfield', status: 'Prep 30-day notice', deadline: 'Issue this week', next: 'Draft the notice, confirm tenant names, and schedule delivery instructions.' },
         { property: 'Additional 30-day notices', status: 'Needs list', deadline: 'Queue this week', next: 'Waiting on Sandy for any other addresses needing paperwork.' }
       ],
       vendors: [
@@ -474,7 +781,7 @@
         { vendor: 'Friendly Plumbing (Fidelity)', property: '852 Roundhouse', status: 'Need new visit', next: 'They hit the wrong unit; call via Fidelity claim to rebook and confirm access.' },
         { vendor: 'Jet Plumbing', property: '7541 Cumberland', status: 'Awaiting confirmation', next: 'Check with Sandy whether the jobs are complete and update the tracker.' },
         { vendor: 'Nevada Heating', property: '760 Marsh', status: 'Furnace replacement pending', next: 'Collect their W-9, then release the furnace replacement and lock an install date.' },
-        { vendor: 'Door rebuild – Paul', property: 'Groom project', status: 'Need measurement + bid', next: 'Paul to pick vendor, send bid, and pencil in Thursday install once pricing/materials approved.' },
+        { vendor: 'Door rebuild - Paul', property: 'Groom project', status: 'Need measurement + bid', next: 'Paul to pick vendor, send bid, and pencil in Thursday install once pricing/materials approved.' },
         { vendor: 'M2 Repairs', property: 'Copperwood + Cumberland', status: 'Pending repairs', next: 'Finish ceiling at Cumberland and remaining Copperwood items per the M2 invoice.' }
       ],
       field: [
@@ -483,14 +790,14 @@
       ],
       reminders: [
         { item: 'Sawyer citation info', detail: 'Need issuing agency + citation number to contest/delay.' },
-        { item: '4606 Neil exterior photos', detail: 'Waiting on Sandy to confirm it’s done and send the files for the archive.' },
+        { item: '4606 Neil exterior photos', detail: 'Waiting on Sandy to confirm it\'s done and send the files for the archive.' },
         { item: 'Text channel for ops', detail: 'Wire up Twilio/shared line so Elliot can text Jimmy, Jon, Melissa.' },
         { item: 'Ops build hour', detail: 'Vendor DB, maintenance tracker, property folders, washer/dryer log.' }
       ],
       ops: [
         { title: 'Command Center Activity Log', status: 'Archive live', notes: 'Append every completed task to data/activity_logs/command_center_activity_log.csv (until Google Drive quota clears for a Sheet) so we have a permanent record.' },
-        { title: '760 Marsh Rent Target', status: '$2.9k–$3.15k', notes: 'Historic 3/2 (1,589 sq ft). See docs/properties/760_marsh_rent_analysis.md for comps + methodology.' },
-        { title: 'Weekly Ops Hour – System Buildout', status: 'Calendar block', notes: 'Use the weekly hour for the vendor DB, maintenance tracker, property folders, and washer/dryer tracking.' },
+        { title: '760 Marsh Rent Target', status: '$2.9k-$3.15k', notes: 'Historic 3/2 (1,589 sq ft). See docs/properties/760_marsh_rent_analysis.md for comps + methodology.' },
+        { title: 'Weekly Ops Hour - System Buildout', status: 'Calendar block', notes: 'Use the weekly hour for the vendor DB, maintenance tracker, property folders, and washer/dryer tracking.' },
         { title: 'Job Board & Comms', status: 'Live', notes: 'Maintain the GitHub Pages site and add SMS workflows once the platform is picked.' }
       ],
       cronJobs: [
@@ -555,7 +862,7 @@
           name: 'Connie net sheets delivery',
           type: 'cron',
           scheduleLabel: 'Cron · 0 8 * * 4,5 (PT)',
-          description: 'Remind Jimmy to prep/hand-deliver Connie’s $399k / $395k / $385k sheets.',
+          description: 'Remind Jimmy to prep/hand-deliver Connie\'s $399k / $395k / $385k sheets.',
           nextRun: 1773932400000
         },
         {
@@ -563,7 +870,7 @@
           name: 'Revisit ops calendar idea',
           type: 'at',
           scheduleLabel: 'One-time · Mar 20, 2026 · 9:00 AM PT',
-          description: 'Bring up the Ops Schedule calendar staffing idea if it hasn’t been requested yet.',
+          description: 'Bring up the Ops Schedule calendar staffing idea if it hasn\'t been requested yet.',
           nextRun: 1774022400000
         },
         {
@@ -601,50 +908,64 @@
         { title: 'AI Operations Drive', url: 'https://drive.google.com/drive/folders/1MmapByyYhIm8zoRHoo_1VtimxL0XtHZ2?usp=drive_link', description: 'Shared Drive for trackers, templates, and shared files.' }
       ],
       jimmy: [
-        { title: '852 Roundhouse – ALD docs', status: 'Need to schedule', notes: 'Block time to help Sandy finalize American Leak Detection paperwork + follow-up actions for Roundhouse.' },
+        { title: 'Gmail forwarding automation', status: '80% complete', notes: 'Automate Gmail filters so Jimmy & Sandy leads auto-forward to Elliot; verify duplicates are suppressed and document the setup in Command Center.' },
         { title: 'Window frame locks', status: 'Schedule install', notes: 'Line up a locksmith or handyman to add frame locks on the needed windows; confirm count + hardware spec.' },
         { title: 'Washer repair check', status: 'Schedule visit', notes: 'Dispatch the appliance tech to verify the washer repair took, document the work order, and note any parts still pending.' },
         { title: 'Closet hatch install', status: 'Need time slot', notes: 'Measure the opening, pick up materials, and get the installer booked to finish the closet hatch.' },
-        { title: 'Cumberland – ceiling drywall', status: 'Assign crew', notes: 'Coordinate with M2 Repairs to patch/finish the ceiling before showings and document completion.' },
-        { title: 'Contact list – Ross/Georgeson/Mace', status: 'Call or email', notes: 'Touch base with Ron Ross, Tim Ross, Dennis Ross, Darren Georgeson, and Erick Mace; log responses + next steps.' },
+        { title: 'Cumberland - ceiling drywall', status: 'Assign crew', notes: 'Coordinate with M2 Repairs to patch/finish the ceiling before showings and document completion.' },
+        { title: 'Contact list - Ross/Georgeson/Mace', status: 'Call or email', notes: 'Touch base with Ron Ross, Tim Ross, Dennis Ross, Darren Georgeson, and Erick Mace; log responses + next steps.' },
         { title: 'Reconnect with Judge Derek', status: 'Intro follow-up', notes: 'Reach back out to District Judge Derek from the recent event and explore ways to collaborate.' },
-        { title: '2124 Roundhouse – leak & listing prep', status: 'Investigate leak', notes: 'Confirm if there’s an active leak, coordinate repairs, then push the condo live once it’s dry and documented.' },
-        { title: 'Stone View – sprinkler repair', status: 'Schedule vendor', notes: 'Book the irrigation contractor to fix the sprinkler issue at Stone View and confirm sign-off.' },
-        { title: '430 Shire – fireplace service', status: 'Schedule vendor', notes: 'Call the fireplace company to service 430 Shire and file the report for compliance.' },
-        { title: 'Groom Door – Get Paul’s bid', status: 'ASAP', notes: 'Have Paul send his measurement, vendor choice, bid, and tentative Thursday install window for approval.' },
+        { title: '2124 Roundhouse - leak & listing prep', status: 'Investigate leak', notes: 'Confirm if there\'s an active leak, coordinate repairs, then push the condo live once it\'s dry and documented.' },
+        { title: 'Stone View - sprinkler repair', status: 'Schedule vendor', notes: 'Book the irrigation contractor to fix the sprinkler issue at Stone View and confirm sign-off.' },
+        { title: '430 Shire - fireplace service', status: 'Schedule vendor', notes: 'Call the fireplace company to service 430 Shire and file the report for compliance.' },
+        { title: 'Groom Door - Get Paul\'s bid', status: 'ASAP', notes: 'Have Paul send his measurement, vendor choice, bid, and tentative Thursday install window for approval.' },
         { title: 'Halladale Net Sheets', status: '$399k / 395k / 385k', notes: 'Deliver all three versions to Connie Sutton and log feedback.' },
-        { title: '760 Marsh – Schedule furnace work', status: 'Waiting on W-9', notes: 'Once Nevada Heating sends their W-9, schedule the furnace replacement and loop in masonry for any follow-up work.' },
-        { title: 'Mt. Whitney Tow Photos', status: 'Collect from Melissa', notes: 'Pull Melissa’s timestamp + photo set so the tow log can be filed.' },
-        { title: 'Copperwood MLS', status: 'Live – marketing push', notes: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
+        { title: '760 Marsh - Schedule furnace work', status: 'Waiting on W-9', notes: 'Once Nevada Heating sends their W-9, schedule the furnace replacement and loop in masonry for any follow-up work.' },
+        { title: 'Mt. Whitney Tow Photos', status: 'Complete - 3/24', notes: 'Vehicle removed 3/24 at 08:44 AM PT; tow log + photo set archived in the Mt. Whitney folder.' },
+        { title: 'Copperwood MLS', status: 'Live - marketing push', notes: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
         { title: 'Sawyer Citation Info', status: 'Needed', notes: 'Send agency + citation number so the notice can be contested.' },
         { title: 'SMS Channel for Ops', status: 'Choose platform', notes: 'Confirm Twilio/shared line so Elliot can text field teams + you.' }
       ],
       sandy: [
-        { title: 'American Leak Detection – 852 Roundhouse', status: '3/10 · 8 AM', notes: 'Be onsite, inform downstairs neighbor, report findings.' },
-        { title: 'Jet Plumbing – 7541 Cumberland', status: '3/9 · 12–2 PM', notes: 'Lock tenant access window and text confirmation.' },
-        { title: '4606 Neil Exterior Photos', status: 'Confirm/close', notes: 'Let Elliot know if the exterior/storage photos are done and where they’re saved.' },
+        { title: 'American Leak Detection - 852 Roundhouse', status: '3/10 · 8 AM', notes: 'Be onsite, inform downstairs neighbor, report findings.' },
+        { title: 'Jet Plumbing - 7541 Cumberland', status: '3/9 · 12-2 PM', notes: 'Lock tenant access window and text confirmation.' },
+        { title: '4606 Neil Exterior Photos', status: 'Confirm/close', notes: 'Let Elliot know if the exterior/storage photos are done and where they\'re saved.' },
         { title: 'Matterport vs. Zillow', status: 'Decision needed', notes: 'Review cost/downtime with Jimmy and decide whether to pause Matterport.' },
         { title: '30-day notice list', status: 'Outstanding', notes: 'Send any other addresses needing notices so paperwork can be queued.' }
       ],
       jon: [
-        { title: 'Mt. Whitney VIN + photo log', status: 'Complete – organize', notes: 'Photos are in; drop them into the Drive folder named with the address + tenant once you have the files.' },
-        { title: 'Largomarcino remote + keys', status: 'In progress', notes: 'Program remote, cut/deliver keys before Melissa’s photo run.' },
-        { title: 'Help Dave move – 1025 Tyler', status: 'Friday', notes: 'Coordinate with Dave on Friday’s move assist (load list, timing, vehicle/tools).' }
+        { title: 'Mt. Whitney VIN + photo log', status: 'Archive - done', notes: 'Vehicle is gone; keep the VIN/photo set and tow receipt in the Mt. Whitney Drive folder for records.' },
+        { title: 'Largomarcino remote + keys', status: 'In progress', notes: 'Program remote, cut/deliver keys before Melissa\'s photo run.' },
+        { title: 'Help Dave move - 1025 Tyler', status: 'Friday', notes: 'Coordinate with Dave on Friday\'s move assist (load list, timing, vehicle/tools).' }
       ],
       melissa: [
-        { title: 'Mt. Whitney Tow Notice Posting', status: 'Complete – send files', notes: 'Posting is done; Jimmy still needs the timestamp + photo set from Melissa to lock the tow log.' },
-        { title: '852 Roundhouse – Running Toilet', status: 'Scheduling', notes: 'Coordinate Fidelity warranty call, lock appointment, confirm tenant.' },
+        { title: 'Mt. Whitney Tow Notice Posting', status: 'Complete - archived', notes: 'Posting proof, timestamp, and tow confirmation filed; vehicle cleared 3/24 at 08:44 AM PT.' },
+        { title: '852 Roundhouse - Running Toilet', status: 'Scheduling', notes: 'Coordinate Fidelity warranty call, lock appointment, confirm tenant.' },
         { title: 'Mariner Cove Rent-Ready Walk', status: 'Today', notes: 'Bring supplies, verify detectors, cabinets, cleanliness, document issues.' },
-        { title: '1025 Tyler – Help Dave move', status: 'Need schedule', notes: 'Coordinate with Dave for the 1025 Tyler move assist (timing, access, checklist).' }
+        { title: '1025 Tyler - Help Dave move', status: 'Need schedule', notes: 'Coordinate with Dave for the 1025 Tyler move assist (timing, access, checklist).' }
       ],
       paul: [
-        { title: 'Groom Door – Measure & Vendor pick', status: 'Schedule now', notes: 'Set Paul’s measurement visit ASAP so he can choose his preferred vendor and confirm scope.' },
-        { title: 'Groom Door – Bid + Thu install', status: 'Pending bid', notes: 'Request his bid, confirm materials availability, and pencil in a Thursday install once you approve.' }
+        { title: 'Groom Door - Measure & Vendor pick', status: 'Schedule now', notes: 'Set Paul\'s measurement visit ASAP so he can choose his preferred vendor and confirm scope.' },
+        { title: 'Groom Door - Bid + Thu install', status: 'Pending bid', notes: 'Request his bid, confirm materials availability, and pencil in a Thursday install once you approve.' }
       ]
     };
 
     const RENTAL_ENDPOINT = (window.RENTAL_ENDPOINT || 'https://script.google.com/macros/s/AKfycbx6M4ev6h1v0DEpj29gdbAmA4gwXoUNBRCd6Q-84CEq-1c6dZXZkcEnZiWZQB3pY-y8Kg/exec').trim();
     const RENTAL_ENDPOINT_READY = RENTAL_ENDPOINT && !RENTAL_ENDPOINT.includes('REPLACE_WITH_DEPLOYMENT_ID');
+    const DEFAULT_LEAD_RACE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyp-HyEVLJ6N_CwEfYReYeK2IlIVNLOAqPE5Ev7G47jrAkor79Gg8Bsv-4E63E3JurB/exec';
+    const leadRaceApiConfig = ((window.LEAD_RACE_API || '') + '').trim();
+    const leadRaceEndpointSource = (window.LEAD_RACE_ENDPOINT || leadRaceApiConfig || DEFAULT_LEAD_RACE_ENDPOINT);
+    const LEAD_RACE_ENDPOINT = leadRaceEndpointSource.trim();
+    const derivedLeadRaceAction = leadRaceApiConfig ? `${leadRaceApiConfig.replace(/\/$/, '')}/action` : '';
+    const actionEndpointSource = window.LEAD_RACE_ACTION_ENDPOINT || derivedLeadRaceAction || LEAD_RACE_ENDPOINT;
+    const LEAD_RACE_ACTION_ENDPOINT = (actionEndpointSource || '').trim();
+    const leadRaceState = {
+      records: [],
+      byTeam: { jimmy: [], sandy: [] },
+      active: { jimmy: null, sandy: null },
+      loading: false,
+      error: null
+    };
 
     const timestamp = new Date().toLocaleString('en-US', {
       weekday: 'short', month: 'short', day: 'numeric',
@@ -713,16 +1034,22 @@
     renderCards('lead-cards', state.leads, lead => `
       <div class="pill">${lead.status}</div>
       <h3>${lead.name}</h3>
-      <div class="meta">${lead.property}</div>
-      <p class="notes">${lead.next}</p>
+      <ul class="card-bullets">
+        <li>Property: ${lead.property}</li>
+        <li>Next: ${lead.next}</li>
+      </ul>
     `);
 
     const rentalCardTemplate = show => `
       <div class="pill ${show.needsApproval ? 'warning' : ''}">${show.status}</div>
       <h3>${show.lead}</h3>
-      <div class="meta">${show.property} · Requested ${show.requested}</div>
-      <p class="notes">${show.notes}</p>
-      <div class="meta">Owner: ${show.owner}${show.confirmed ? ` · Confirmed ${show.confirmed}` : ' · Waiting on confirmation'}</div>
+      <div class="meta">${show.property}</div>
+      <ul class="card-bullets">
+        <li>Requested: ${show.requested}</li>
+        ${show.confirmed ? '<li>Confirmed: ' + show.confirmed + '</li>' : ''}
+        <li>Owner: ${show.owner}${show.needsApproval ? ' · Needs approval' : ''}</li>
+        ${show.notes ? '<li>' + show.notes + '</li>' : ''}
+      </ul>
     `;
 
     async function loadRentalData() {
@@ -838,11 +1165,228 @@
       }
     }
 
+    function setRaceCheer(message) {
+      const el = document.getElementById('race-hero-cheer');
+      if (el) {
+        el.textContent = message;
+      }
+    }
+
+    function initLeadRace() {
+      document.querySelectorAll('.race-action-btn').forEach(btn => {
+        btn.addEventListener('click', () => handleLeadRaceAction(btn.dataset.team, btn.dataset.action));
+      });
+      if (!LEAD_RACE_ENDPOINT) {
+        setRaceCheer('Set LEAD_RACE_ENDPOINT to stream live Lead Race data.');
+        renderRaceScoreboard([], [], []);
+        renderRaceQueue([], 'race-jimmy-queue', 'Jimmy');
+        renderRaceQueue([], 'race-sandy-queue', 'Sandy');
+        updateLeadRaceButtons();
+        return;
+      }
+      loadLeadRaceQueue();
+    }
+
+    async function loadLeadRaceQueue() {
+      try {
+        leadRaceState.loading = true;
+        updateLeadRaceButtons();
+        const response = await fetch(LEAD_RACE_ENDPOINT, { cache: 'no-store' });
+        if (!response.ok) throw new Error(`HTTP ${response.status}`);
+        const payload = await response.json();
+        const rows = Array.isArray(payload.rows) ? payload.rows : (payload.records || []);
+        const records = rows.map(normalizeLeadRow).filter(record => record.contact_id);
+        leadRaceState.records = records;
+        const filterLane = team => records.filter(record => record.team === team);
+        const jimmyQueue = filterLane('Jimmy');
+        const sandyQueue = filterLane('Sandy');
+        const unassignedQueue = records.filter(record => record.team !== 'Jimmy' && record.team !== 'Sandy');
+        const rank = lead => ({ '': 0, unassigned: 0, c: 1, b: 2, a: 3, 'a+': 4, d: 5, f: 6 }[(lead.grade || '').toLowerCase()] ?? 10);
+        const sorter = (a, b) => {
+          if (rank(a) !== rank(b)) return rank(a) - rank(b);
+          return (a.displayName || '').localeCompare(b.displayName || '');
+        };
+        jimmyQueue.sort(sorter);
+        sandyQueue.sort(sorter);
+        leadRaceState.byTeam = { jimmy: jimmyQueue, sandy: sandyQueue };
+        leadRaceState.active.jimmy = jimmyQueue[0] || null;
+        leadRaceState.active.sandy = sandyQueue[0] || null;
+        renderRaceScoreboard(jimmyQueue, sandyQueue, unassignedQueue);
+        renderRaceQueue(jimmyQueue, 'race-jimmy-queue', 'Jimmy');
+        renderRaceQueue(sandyQueue, 'race-sandy-queue', 'Sandy');
+        const now = new Date();
+        setRaceCheer(`Last synced ${now.toLocaleTimeString('en-US', { hour: 'numeric', minute: '2-digit' })} � Jimmy ${jimmyQueue.length} � Sandy ${sandyQueue.length}`);
+      } catch (err) {
+        console.error('Lead Race load failed', err);
+        setRaceCheer(`Lead Race load failed: ${err.message}`);
+        renderRaceScoreboard([], [], []);
+        renderRaceQueue([], 'race-jimmy-queue', 'Jimmy');
+        renderRaceQueue([], 'race-sandy-queue', 'Sandy');
+      } finally {
+        leadRaceState.loading = false;
+        updateLeadRaceButtons();
+      }
+    }
+
+    function normalizeLeadRow(row) {
+      return {
+        team: (row['Team'] || '').trim() || 'Unassigned',
+        grade: (row['Grade'] || '').trim(),
+        status: (row['Status'] || '').trim(),
+        displayName: (row['Display Name'] || '').trim(),
+        company: (row['Company'] || '').trim(),
+        email: (row['Email'] || '').trim(),
+        phone: (row['Phone'] || '').trim(),
+        city: (row['City'] || '').trim(),
+        state: (row['State'] || '').trim(),
+        properties: (row['Properties Owned'] || '').trim(),
+        tags: (row['Tags'] || '').split(/[,;]+/).map(tag => tag.trim()).filter(Boolean),
+        source: (row['Source'] || '').trim(),
+        notes: (row['Notes'] || '').trim(),
+        contact_id: (row['Contact ID'] || '').trim()
+      };
+    }
+
+    function renderRaceScoreboard(jimmyQueue, sandyQueue, unassignedQueue = []) {
+      const scoreboard = document.getElementById('race-scoreboard');
+      if (!scoreboard) return;
+      const total = jimmyQueue.length + sandyQueue.length + unassignedQueue.length;
+      if (!LEAD_RACE_ENDPOINT) {
+        scoreboard.innerHTML = `
+          <div class="race-card">
+            <div class="race-pill">Lead Race</div>
+            <h3>Offline</h3>
+            <p class="notes">Set LEAD_RACE_ENDPOINT to stream the live queue.</p>
+          </div>
+        `;
+        return;
+      }
+      const allRecords = [...jimmyQueue, ...sandyQueue, ...unassignedQueue];
+      const cards = [
+        { label: 'Team Jimmy', pill: 'Jimmy', count: jimmyQueue.length, grades: summarizeGrades(jimmyQueue) },
+        { label: 'Team Sandy', pill: 'Sandy', count: sandyQueue.length, grades: summarizeGrades(sandyQueue) },
+        { label: 'Unassigned', pill: 'Queue', count: unassignedQueue.length, grades: summarizeGrades(unassignedQueue) },
+        { label: 'Total database', pill: 'Total', count: total, grades: summarizeGrades(allRecords) }
+      ];
+      scoreboard.innerHTML = cards.map(card => {
+        const gradeText = Object.entries(card.grades)
+          .map(([grade, value]) => `${grade}: ${value}`)
+          .join(' � ') || 'No grade data';
+        const width = total ? Math.min(100, Math.round((card.count / total) * 100)) : (card.count ? 100 : 0);
+        return `
+          <div class="race-card">
+            <div class="race-pill">${card.pill}</div>
+            <h3>${card.count} queued</h3>
+            <p class="notes">${gradeText}</p>
+            <div class="race-progress"><span style="width:${width}%"></span></div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderRaceQueue(queue, containerId, label) {
+      const container = document.getElementById(containerId);
+      if (!container) return;
+      container.innerHTML = '';
+      if (!queue.length) {
+        container.innerHTML = `<div class="race-empty">No ${label} contacts ready.</div>`;
+        return;
+      }
+      queue.slice(0, 20).forEach((lead, index) => {
+        const details = formatLeadDetails(lead);
+        const tagLine = (lead.tags || []).filter(Boolean).join(' � ');
+        container.innerHTML += `
+          <article class="race-queue-card${index === 0 ? ' active' : ''}">
+            <div class="pill">Grade ${lead.grade || '�'}</div>
+            <h4>${formatLeadName(lead)}</h4>
+            <p class="meta">${lead.phone || 'No phone'} � ${lead.email || 'No email'}</p>
+            ${tagLine ? `<p class="meta">${tagLine}</p>` : ''}
+            <ul class="card-bullets">
+              ${details.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </article>
+        `;
+      });
+    }
+
+    function formatLeadName(lead) {
+      return lead.displayName || lead.company || 'Unnamed contact';
+    }
+
+    function formatLeadDetails(lead) {
+      const items = [];
+      if (lead.properties) {
+        items.push(`Properties: ${lead.properties}`);
+      }
+      if (lead.source) {
+        items.push(`Source: ${lead.source}`);
+      }
+      if (lead.city || lead.state) {
+        items.push(`${lead.city || ''} ${lead.state || ''}`.trim());
+      }
+      if (lead.notes) {
+        lead.notes.split('|').forEach(entry => {
+          const cleaned = entry.trim();
+          if (cleaned) items.push(cleaned);
+        });
+      }
+      return items.slice(0, 4);
+    }
+
+    function summarizeGrades(queue) {
+      const summary = {};
+      queue.forEach(lead => {
+        const grade = (lead.grade || 'Unassigned').toUpperCase();
+        summary[grade] = (summary[grade] || 0) + 1;
+      });
+      return summary;
+    }
+
+    function updateLeadRaceButtons() {
+      ['jimmy', 'sandy'].forEach(team => {
+        const hasLead = !!leadRaceState.active[team];
+        document.querySelectorAll(`.race-action-btn[data-team="${team}"]`).forEach(btn => {
+          btn.disabled = !hasLead || leadRaceState.loading || !LEAD_RACE_ACTION_ENDPOINT;
+        });
+      });
+    }
+
+    async function handleLeadRaceAction(team, action) {
+      if (!LEAD_RACE_ACTION_ENDPOINT) return;
+      const target = leadRaceState.active[team];
+      if (!target) return;
+      leadRaceState.loading = true;
+      updateLeadRaceButtons();
+      try {
+        const payload = JSON.stringify({ contact_id: target.contact_id, action, by: `LeadRace-${team}` });
+        const res = await fetch(LEAD_RACE_ACTION_ENDPOINT, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain' },
+          body: payload
+        });
+        if (!res.ok) {
+          const payload = await res.json().catch(() => ({}));
+          throw new Error(payload.error || `HTTP ${res.status}`);
+        }
+        await loadLeadRaceQueue();
+      } catch (err) {
+        console.error('Lead Race action failed', err);
+        setRaceCheer(`Lead Race action failed: ${err.message}`);
+      } finally {
+        leadRaceState.loading = false;
+        updateLeadRaceButtons();
+      }
+    }
+
+
+
     renderCards('listing-sale-cards', state.listingsForSale, listing => `
       <div class="pill">${listing.price}</div>
       <h3><a href="${listing.link}" target="_blank" rel="noopener noreferrer">${listing.name} ↗</a></h3>
-      <p class="notes">${listing.details}</p>
-      <div class="meta">${listing.notes}</div>
+      <ul class="card-bullets">
+        <li>${listing.details}</li>
+        <li>${listing.notes}</li>
+      </ul>
     `);
 
     const pendingContainer = document.getElementById('pending-sale-cards');
@@ -852,41 +1396,59 @@
       renderCards('pending-sale-cards', state.pendingSales, sale => `
         <div class="pill">${sale.status}</div>
         <h3><a href="${sale.link}" target="_blank" rel="noopener noreferrer">${sale.name} ↗</a></h3>
-        <p class="notes">${sale.details}</p>
-        <div class="meta">${sale.notes}</div>
+        <ul class="card-bullets">
+          <li>${sale.details}</li>
+          <li>${sale.notes}</li>
+        </ul>
       `);
     }
 
     renderCards('notice-cards', state.notices, notice => `
       <div class="pill">${notice.status}</div>
       <h3>${notice.property}</h3>
-      <div class="meta">${notice.deadline}</div>
-      <p class="notes">${notice.next}</p>
+      <ul class="card-bullets">
+        <li>Deadline: ${notice.deadline}</li>
+        <li>${notice.next}</li>
+      </ul>
+    `);
+
+    renderCards('lease-cards', state.leases, lease => `
+      <div class="pill">${lease.status}</div>
+      <h3>${lease.property}</h3>
+      <p class="notes">${lease.next}</p>
     `);
 
     renderCards('vendor-cards', state.vendors, vendor => `
       <div class="pill">${vendor.status}</div>
       <h3>${vendor.vendor}</h3>
-      <div class="meta">${vendor.property}</div>
-      <p class="notes">${vendor.next}</p>
+      <ul class="card-bullets">
+        <li>Property: ${vendor.property}</li>
+        <li>${vendor.next}</li>
+      </ul>
     `);
 
     renderCards('field-cards', state.field, item => `
       <div class="pill">${item.status}</div>
       <h3>${item.task}</h3>
-      <div class="meta">${item.owner}</div>
-      <p class="notes">${item.note}</p>
+      <ul class="card-bullets">
+        <li>Owner: ${item.owner}</li>
+        <li>${item.note}</li>
+      </ul>
     `);
 
     renderCards('reminder-cards', state.reminders, reminder => `
       <h3>${reminder.item}</h3>
-      <p class="notes">${reminder.detail}</p>
+      <ul class="card-bullets">
+        <li>${reminder.detail}</li>
+      </ul>
     `);
 
     renderCards('ops-cards', state.ops, project => `
       <div class="pill">${project.status}</div>
       <h3>${project.title}</h3>
-      <p class="notes">${project.notes}</p>
+      <ul class="card-bullets">
+        <li>${project.notes}</li>
+      </ul>
     `);
 
     renderCards('jimmy-cards', state.jimmy, task => `
@@ -918,6 +1480,29 @@
       <h3>${task.title}</h3>
       <p class="notes">${task.notes}</p>
     `);
+
+    const m2Buttons = document.querySelectorAll('.subtab-btn');
+    let currentM2 = 'jon';
+
+    function renderM2(person) {
+      const data = state[person] || [];
+      renderCards('m2-cards', data, task => `
+        <div class="pill">${task.status}</div>
+        <h3>${task.title}</h3>
+        <p class="notes">${task.notes}</p>
+      `);
+    }
+
+    function activateM2(person) {
+      currentM2 = person;
+      m2Buttons.forEach(btn => btn.classList.toggle('active', btn.dataset.person === person));
+      renderM2(person);
+    }
+
+    if (m2Buttons.length) {
+      activateM2(currentM2);
+      m2Buttons.forEach(btn => btn.addEventListener('click', () => activateM2(btn.dataset.person)));
+    }
 
     renderCards('link-cards', state.links, link => `
       <h3><a href="${link.url}" target="_blank" rel="noopener noreferrer">${link.title} ↗</a></h3>
@@ -994,7 +1579,7 @@
     function startElliotTimer() {
       if (!elliotTaskEl || !state.elliotActions || !state.elliotActions.current) return;
       const current = state.elliotActions.current;
-      elliotTaskEl.textContent = current.task || '—';
+      elliotTaskEl.textContent = current.task || '-';
       const fallbackTarget = Date.now() + (current.etaMinutes || 0) * 60000;
       const explicitTarget = current.availableAt ? Date.parse(current.availableAt) : NaN;
       const target = Number.isFinite(explicitTarget) ? explicitTarget : fallbackTarget;
@@ -1037,6 +1622,7 @@
 
     startElliotTimer();
     renderElliotQueue();
+    initLeadRace();
 
     const buttons = document.querySelectorAll('.tab-btn');
     const panels = document.querySelectorAll('.tab-panel');
@@ -1050,3 +1636,4 @@
   </script>
 </body>
 </html>
+

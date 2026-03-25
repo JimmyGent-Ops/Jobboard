@@ -494,6 +494,15 @@
   </style>
 </head>
 <body>
+  <script>
+    (function() {
+      const localHosts = ['', 'localhost', '127.0.0.1'];
+      const host = (window.location.hostname || '').toLowerCase();
+      if (window.location.protocol === 'file:' || localHosts.includes(host)) {
+        window.LEAD_RACE_API = window.LEAD_RACE_API || 'http://127.0.0.1:5577/api/lead-race';
+      }
+    })();
+  </script>
   <div class="layout">
     <aside class="sidebar">
       <div class="logo">Command Center</div>
@@ -912,7 +921,7 @@
         { title: 'Groom Door - Get Paul\'s bid', status: 'ASAP', notes: 'Have Paul send his measurement, vendor choice, bid, and tentative Thursday install window for approval.' },
         { title: 'Halladale Net Sheets', status: '$399k / 395k / 385k', notes: 'Deliver all three versions to Connie Sutton and log feedback.' },
         { title: '760 Marsh - Schedule furnace work', status: 'Waiting on W-9', notes: 'Once Nevada Heating sends their W-9, schedule the furnace replacement and loop in masonry for any follow-up work.' },
-        { title: 'Mt. Whitney Tow Photos', status: 'Collect from Melissa', notes: 'Pull Melissa\'s timestamp + photo set so the tow log can be filed.' },
+        { title: 'Mt. Whitney Tow Photos', status: 'Complete - 3/24', notes: 'Vehicle removed 3/24 at 08:44 AM PT; tow log + photo set archived in the Mt. Whitney folder.' },
         { title: 'Copperwood MLS', status: 'Live - marketing push', notes: 'Build the table display/open-house schedule, finish the Zillow tour + walkthrough video, and send showing instructions.' },
         { title: 'Sawyer Citation Info', status: 'Needed', notes: 'Send agency + citation number so the notice can be contested.' },
         { title: 'SMS Channel for Ops', status: 'Choose platform', notes: 'Confirm Twilio/shared line so Elliot can text field teams + you.' }
@@ -925,12 +934,12 @@
         { title: '30-day notice list', status: 'Outstanding', notes: 'Send any other addresses needing notices so paperwork can be queued.' }
       ],
       jon: [
-        { title: 'Mt. Whitney VIN + photo log', status: 'Complete - organize', notes: 'Photos are in; drop them into the Drive folder named with the address + tenant once you have the files.' },
+        { title: 'Mt. Whitney VIN + photo log', status: 'Archive - done', notes: 'Vehicle is gone; keep the VIN/photo set and tow receipt in the Mt. Whitney Drive folder for records.' },
         { title: 'Largomarcino remote + keys', status: 'In progress', notes: 'Program remote, cut/deliver keys before Melissa\'s photo run.' },
         { title: 'Help Dave move - 1025 Tyler', status: 'Friday', notes: 'Coordinate with Dave on Friday\'s move assist (load list, timing, vehicle/tools).' }
       ],
       melissa: [
-        { title: 'Mt. Whitney Tow Notice Posting', status: 'Complete - send files', notes: 'Posting is done; Jimmy still needs the timestamp + photo set from Melissa to lock the tow log.' },
+        { title: 'Mt. Whitney Tow Notice Posting', status: 'Complete - archived', notes: 'Posting proof, timestamp, and tow confirmation filed; vehicle cleared 3/24 at 08:44 AM PT.' },
         { title: '852 Roundhouse - Running Toilet', status: 'Scheduling', notes: 'Coordinate Fidelity warranty call, lock appointment, confirm tenant.' },
         { title: 'Mariner Cove Rent-Ready Walk', status: 'Today', notes: 'Bring supplies, verify detectors, cabinets, cleanliness, document issues.' },
         { title: '1025 Tyler - Help Dave move', status: 'Need schedule', notes: 'Coordinate with Dave for the 1025 Tyler move assist (timing, access, checklist).' }
@@ -944,8 +953,12 @@
     const RENTAL_ENDPOINT = (window.RENTAL_ENDPOINT || 'https://script.google.com/macros/s/AKfycbx6M4ev6h1v0DEpj29gdbAmA4gwXoUNBRCd6Q-84CEq-1c6dZXZkcEnZiWZQB3pY-y8Kg/exec').trim();
     const RENTAL_ENDPOINT_READY = RENTAL_ENDPOINT && !RENTAL_ENDPOINT.includes('REPLACE_WITH_DEPLOYMENT_ID');
     const DEFAULT_LEAD_RACE_ENDPOINT = 'https://script.google.com/macros/s/AKfycbyp-HyEVLJ6N_CwEfYReYeK2IlIVNLOAqPE5Ev7G47jrAkor79Gg8Bsv-4E63E3JurB/exec';
-    const LEAD_RACE_ENDPOINT = (window.LEAD_RACE_ENDPOINT || DEFAULT_LEAD_RACE_ENDPOINT).trim();
-    const LEAD_RACE_ACTION_ENDPOINT = (window.LEAD_RACE_ACTION_ENDPOINT || LEAD_RACE_ENDPOINT).trim();
+    const leadRaceApiConfig = ((window.LEAD_RACE_API || '') + '').trim();
+    const leadRaceEndpointSource = (window.LEAD_RACE_ENDPOINT || leadRaceApiConfig || DEFAULT_LEAD_RACE_ENDPOINT);
+    const LEAD_RACE_ENDPOINT = leadRaceEndpointSource.trim();
+    const derivedLeadRaceAction = leadRaceApiConfig ? `${leadRaceApiConfig.replace(/\/$/, '')}/action` : '';
+    const actionEndpointSource = window.LEAD_RACE_ACTION_ENDPOINT || derivedLeadRaceAction || LEAD_RACE_ENDPOINT;
+    const LEAD_RACE_ACTION_ENDPOINT = (actionEndpointSource || '').trim();
     const leadRaceState = {
       records: [],
       byTeam: { jimmy: [], sandy: [] },
